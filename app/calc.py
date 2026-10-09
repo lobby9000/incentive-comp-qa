@@ -1,7 +1,7 @@
 """Commission calculation for plan RET-Q4-2026 (requirements 3.3)."""
 
 from dataclasses import dataclass
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 
 GATE = Decimal("0.50")
 
@@ -42,7 +42,8 @@ def calculate(credited_cents: int, quota_cents: int) -> CalcResult:
     credited = Decimal(credited_cents) / 100
     attainment = credited / quota
     attainment_pct = (attainment * 100).quantize(CENT)
-    qualified = attainment_pct >= GATE * 100
+    # BUG-002: the gate uses the exact attainment, never the rounded display value
+    qualified = attainment >= GATE
 
     bands = []
     total = Decimal("0")
@@ -54,7 +55,8 @@ def calculate(credited_cents: int, quota_cents: int) -> CalcResult:
         bands.append(BandResult(name, lower * 100, upper * 100, rate * 100, base, commission))
         total += commission
 
-    payout = total.quantize(CENT) if qualified else Decimal("0.00")
+    # BUG-003: round once, half-up (Decimal's default context is half-even)
+    payout = total.quantize(CENT, rounding=ROUND_HALF_UP) if qualified else Decimal("0.00")
     if payout < 0:
         payout = Decimal("0.00")
     return CalcResult(quota, credited, attainment, attainment_pct, qualified, bands, payout)
