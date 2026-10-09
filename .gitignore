@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+*.db
+*.db-journal
+.pytest_cache/
+.coverage
+mutants/
+node_modules/
+reports/tmp/
