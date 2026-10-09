@@ -41,7 +41,8 @@ def calculate(credited_cents: int, quota_cents: int) -> CalcResult:
     quota = Decimal(quota_cents) / 100
     credited = Decimal(credited_cents) / 100
     attainment = credited / quota
-    attainment_pct = (attainment * 100).quantize(CENT)
+    # BUG-006: display rounding is half-up (ties away from zero), REQ-CAL-06
+    attainment_pct = (attainment * 100).quantize(CENT, rounding=ROUND_HALF_UP)
     # BUG-002: the gate uses the exact attainment, never the rounded display value
     qualified = attainment >= GATE
 
@@ -60,3 +61,8 @@ def calculate(credited_cents: int, quota_cents: int) -> CalcResult:
     if payout < 0:
         payout = Decimal("0.00")
     return CalcResult(quota, credited, attainment, attainment_pct, qualified, bands, payout)
+
+
+def display(value: Decimal) -> str:
+    """Two-decimal display, half-up (REQ-STM-03)."""
+    return f"{value.quantize(CENT, rounding=ROUND_HALF_UP):.2f}"

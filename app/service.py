@@ -4,7 +4,7 @@ from decimal import Decimal
 from sqlalchemy import func
 from sqlmodel import Session, select
 
-from .calc import calculate
+from .calc import calculate, display
 from .errors import ApiError
 from .models import Credit, Payout, Period, Quota, Seller, Store, Txn
 from .schemas import TransactionIn, money_str
@@ -268,8 +268,8 @@ def statement(session: Session, period_id: str, seller_id: str) -> dict:
                 "from_pct": f"{b.lower_pct:.2f}",
                 "to_pct": f"{b.upper_pct:.2f}",
                 "rate_pct": f"{b.rate_pct:.2f}",
-                "base": f"{b.base:.2f}",
-                "commission": f"{b.commission:.2f}",
+                "base": display(b.base),
+                "commission": display(b.commission),
             }
             for b in result.bands
         ],
