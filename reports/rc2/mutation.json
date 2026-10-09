@@ -1,0 +1,152 @@
+{
+  "mutants": 18,
+  "killed": 18,
+  "survived": 0,
+  "score": "100%",
+  "results": [
+    {
+      "id": "M01",
+      "file": "app/calc.py",
+      "description": "Gate becomes exclusive (50% no longer qualifies)",
+      "status": "KILLED",
+      "killed_by": "tests/test_calculation.py::test_TC_CAL_003_exactly_50_percent_qualifies",
+      "seconds": 1.8
+    },
+    {
+      "id": "M02",
+      "file": "app/calc.py",
+      "description": "Gate evaluated on the rounded display value (BUG-002 reintroduced)",
+      "status": "KILLED",
+      "killed_by": "tests/test_calculation.py::test_TC_CAL_001_just_below_gate - Assertion...",
+      "seconds": 1.8
+    },
+    {
+      "id": "M03",
+      "file": "app/calc.py",
+      "description": "Payout rounding back to banker's rounding (BUG-003 reintroduced)",
+      "status": "KILLED",
+      "killed_by": "tests/test_calculation.py::test_TC_CAL_010_half_cent_tie_rounds_up - A...",
+      "seconds": 2.5
+    },
+    {
+      "id": "M04",
+      "file": "app/calc.py",
+      "description": "Band B rate 2.5% becomes 2.0%",
+      "status": "KILLED",
+      "killed_by": "tests/test_calculation.py::test_TC_CAL_005_exactly_100_percent - Asser...",
+      "seconds": 1.8
+    },
+    {
+      "id": "M05",
+      "file": "app/calc.py",
+      "description": "Band C upper limit 150% becomes 140%",
+      "status": "KILLED",
+      "killed_by": "tests/test_calculation.py::test_TC_CAL_006_exactly_150_percent - Asser...",
+      "seconds": 2.1
+    },
+    {
+      "id": "M06",
+      "file": "app/calc.py",
+      "description": "Cap at 200% removed",
+      "status": "KILLED",
+      "killed_by": "tests/test_calculation.py::test_TC_CAL_008_cap_above_200_percent - Ass...",
+      "seconds": 2.2
+    },
+    {
+      "id": "M07",
+      "file": "app/calc.py",
+      "description": "Negative band bases no longer clamped to zero",
+      "status": "KILLED",
+      "killed_by": "tests/test_calculation.py::test_TC_CAL_003_exactly_50_percent_qualifies",
+      "seconds": 1.8
+    },
+    {
+      "id": "M08",
+      "file": "app/calc.py",
+      "description": "Attainment display back to banker's rounding (BUG-006)",
+      "status": "KILLED",
+      "killed_by": "tests/test_calculation.py::test_TC_CAL_010_half_cent_tie_rounds_up - A...",
+      "seconds": 2.3
+    },
+    {
+      "id": "M09",
+      "file": "app/service.py",
+      "description": "Clawback window excludes day 30 (BUG-004 reintroduced)",
+      "status": "KILLED",
+      "killed_by": "tests/test_returns.py::test_TC_RET_002_day_30_is_clawed_back - Asserti...",
+      "seconds": 11.1
+    },
+    {
+      "id": "M10",
+      "file": "app/service.py",
+      "description": "Clawback window includes day 31",
+      "status": "KILLED",
+      "killed_by": "tests/test_returns.py::test_TC_RET_003_day_31_has_no_clawback - Assert...",
+      "seconds": 11.6
+    },
+    {
+      "id": "M11",
+      "file": "app/service.py",
+      "description": "Negative amount split with floor (BUG-005 reintroduced)",
+      "status": "KILLED",
+      "killed_by": "tests/test_returns.py::test_TC_RET_004_odd_cent_partial_return - Asser...",
+      "seconds": 10.9
+    },
+    {
+      "id": "M12",
+      "file": "app/service.py",
+      "description": "Remainder cent goes to the second seller",
+      "status": "KILLED",
+      "killed_by": "tests/test_returns.py::test_TC_RET_004_odd_cent_partial_return - Asser...",
+      "seconds": 10.3
+    },
+    {
+      "id": "M13",
+      "file": "app/service.py",
+      "description": "A return of the exact remaining amount is rejected",
+      "status": "KILLED",
+      "killed_by": "tests/test_calculation.py::test_TC_CAL_009_negative_net_credit - Asser...",
+      "seconds": 2.1
+    },
+    {
+      "id": "M14",
+      "file": "app/service.py",
+      "description": "Duplicate check against stored transactions removed",
+      "status": "KILLED",
+      "killed_by": "tests/test_transactions.py::test_TC_TXN_012_duplicate_transaction_is_not_counted_twice",
+      "seconds": 13.7
+    },
+    {
+      "id": "M15",
+      "file": "app/service.py",
+      "description": "Primary seller store rule removed",
+      "status": "KILLED",
+      "killed_by": "tests/test_transactions.py::test_TC_TXN_010_primary_seller_store_rule",
+      "seconds": 13.3
+    },
+    {
+      "id": "M16",
+      "file": "app/service.py",
+      "description": "Close-in-order check looks at later periods",
+      "status": "KILLED",
+      "killed_by": "tests/test_close.py::test_TC_CLS_001_close_stores_one_row_per_quota - ...",
+      "seconds": 2.9
+    },
+    {
+      "id": "M17",
+      "file": "app/service.py",
+      "description": "Quota-missing check removed from close",
+      "status": "KILLED",
+      "killed_by": "tests/test_close.py::test_TC_CLS_004_credited_seller_without_quota_blocks_close",
+      "seconds": 3.4
+    },
+    {
+      "id": "M18",
+      "file": "app/service.py",
+      "description": "Inactive sellers can receive credit",
+      "status": "KILLED",
+      "killed_by": "tests/test_transactions.py::test_TC_TXN_009_inactive_seller_cannot_receive_credit",
+      "seconds": 13.5
+    }
+  ]
+}

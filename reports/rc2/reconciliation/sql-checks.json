@@ -1,0 +1,38 @@
+{
+  "01_sale_credits_sum.sql": {
+    "rows": 0,
+    "sample": []
+  },
+  "02_return_credits.sql": {
+    "rows": 0,
+    "sample": []
+  },
+  "03_split_floor_rule.sql": {
+    "rows": 0,
+    "sample": []
+  },
+  "04_returns_not_exceed_sale.sql": {
+    "rows": 0,
+    "sample": []
+  },
+  "05_credit_period.sql": {
+    "rows": 0,
+    "sample": []
+  },
+  "06_payout_per_quota.sql": {
+    "rows": 0,
+    "sample": []
+  },
+  "07_payout_credited.sql": {
+    "rows": 0,
+    "sample": []
+  },
+  "08_no_writes_after_close.sql": {
+    "rows": 0,
+    "sample": []
+  },
+  "09_primary_store.sql": {
+    "rows": 0,
+    "sample": []
+  }
+}

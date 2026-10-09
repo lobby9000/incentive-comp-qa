@@ -1,0 +1,17 @@
+{
+  "note": "Results recorded by hand for rc1 where no automated run could complete. The full-volume run could not load data on PostgreSQL (BUG-001 blocks the import endpoint, BUG-008 blocks single posts), so the parallel run used the single-post workaround on SQLite.",
+  "results": {
+    "TC-DB-001": ["Blocked", "BUG-001, BUG-008"],
+    "TC-DB-002": ["Blocked", "BUG-001, BUG-008"],
+    "TC-DB-003": ["Blocked", "BUG-001, BUG-008"],
+    "TC-DB-004": ["Blocked", "BUG-001, BUG-008"],
+    "TC-DB-005": ["Blocked", "BUG-001, BUG-008"],
+    "TC-DB-006": ["Blocked", "BUG-001, BUG-008"],
+    "TC-DB-007": ["Blocked", "BUG-001, BUG-008"],
+    "TC-DB-008": ["Blocked", "BUG-001, BUG-008"],
+    "TC-DB-009": ["Blocked", "BUG-001, BUG-008"],
+    "TC-REC-001": ["Failed", "Workaround run on SQLite: 552 of 750 payouts match, 6,566.74 MXN overpaid (BUG-002, BUG-003, BUG-004, BUG-005)"],
+    "TC-REC-002": ["Failed", "Workaround run on SQLite: total payout differs in all three periods"],
+    "TC-REC-003": ["Not run", "The workaround run did not compare the payout table"]
+  }
+}

@@ -56,3 +56,13 @@ def test_TC_API_007_malformed_json_is_a_validation_error(client):
     r = client.post("/sellers", content=b"{", headers={"content-type": "application/json"})
     assert r.status_code == 422
     assert error_code(r) == "VALIDATION_ERROR"
+
+
+def test_TC_API_008_dates_are_iso_8601(api):
+    api.seller("S00001")
+    r = api.sale("15/10/2026", "10.00", [("S00001", 100)], expect=422)
+    assert error_code(r) == "VALIDATION_ERROR"
+    r = api.sale("2026-10-15", "10.00", [("S00001", 100)])
+    assert r.json()["txn_date"] == "2026-10-15"
+    periods = api.c.get("/periods").json()
+    assert periods[0]["start_date"] == "2026-10-01" and periods[0]["end_date"] == "2026-10-31"

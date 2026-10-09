@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Commission Engine QA" tests="61" time="0.585">
+  <testsuite name="00 Smoke / TC-API-001 Health answers with status and version" id="860807f5-8763-4b28-a951-6e9de5f9c6d8" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.023">
+    <testcase name="Response time under 2 s" time="0.023" classname="00SmokeTcApi001HealthAnswersWithStatusAndVersion"/>
+    <testcase name="TC-API-001 status 200" time="0.023" classname="00SmokeTcApi001HealthAnswersWithStatusAndVersion"/>
+    <testcase name="TC-API-001 status ok and version" time="0.023" classname="00SmokeTcApi001HealthAnswersWithStatusAndVersion"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-SEL-001 Create a seller" id="a4ed7d97-d88c-4bc5-8e14-2947b6cd43a5" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.013">
+    <testcase name="Response time under 2 s" time="0.013" classname="01SellersAndQuotasTcSel001CreateASeller"/>
+    <testcase name="TC-SEL-001 status 201" time="0.013" classname="01SellersAndQuotasTcSel001CreateASeller"/>
+    <testcase name="TC-SEL-001 body echoes input and is ACTIVE" time="0.013" classname="01SellersAndQuotasTcSel001CreateASeller"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / Setup: seller S00002 in T1000" id="19879ede-0e46-4bdd-952f-22626a46765a" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="01SellersAndQuotasSetupSellerS00002InT1000"/>
+    <testcase name="Setup status 201" time="0.009" classname="01SellersAndQuotasSetupSellerS00002InT1000"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-SEL-002 Duplicate seller is rejected" id="6b9207b8-12e7-41dd-9636-65db3ec6ff5f" timestamp="2026-10-09T00:35:35.996Z" tests="4" failures="0" errors="0" time="0.007">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.007" classname="01SellersAndQuotasTcSel002DuplicateSellerIsRejected"/>
+    <testcase name="Response time under 2 s" time="0.007" classname="01SellersAndQuotasTcSel002DuplicateSellerIsRejected"/>
+    <testcase name="TC-SEL-002 status 409" time="0.007" classname="01SellersAndQuotasTcSel002DuplicateSellerIsRejected"/>
+    <testcase name="TC-SEL-002 error code DUPLICATE_SELLER" time="0.007" classname="01SellersAndQuotasTcSel002DuplicateSellerIsRejected"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-API-002 Unknown seller uses the standard error body" id="86192ffb-675a-4ae4-bc80-7a4488aca2b5" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.005">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.005" classname="01SellersAndQuotasTcApi002UnknownSellerUsesTheStandardErrorBody"/>
+    <testcase name="Response time under 2 s" time="0.005" classname="01SellersAndQuotasTcApi002UnknownSellerUsesTheStandardErrorBody"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-API-003 Missing field reports VALIDATION_ERROR" id="d4cedcce-e027-4344-9cd5-ccc76dbb4b59" timestamp="2026-10-09T00:35:35.996Z" tests="4" failures="0" errors="0" time="0.003">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.003" classname="01SellersAndQuotasTcApi003MissingFieldReportsValidationError"/>
+    <testcase name="Response time under 2 s" time="0.003" classname="01SellersAndQuotasTcApi003MissingFieldReportsValidationError"/>
+    <testcase name="TC-API-003 status 422" time="0.003" classname="01SellersAndQuotasTcApi003MissingFieldReportsValidationError"/>
+    <testcase name="TC-API-003 error code VALIDATION_ERROR" time="0.003" classname="01SellersAndQuotasTcApi003MissingFieldReportsValidationError"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-QTA-001 Create a quota" id="2d8f91d6-042e-4cd9-a631-8b04e0270c8e" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.032">
+    <testcase name="Response time under 2 s" time="0.032" classname="01SellersAndQuotasTcQta001CreateAQuota"/>
+    <testcase name="TC-QTA-001 status 201" time="0.032" classname="01SellersAndQuotasTcQta001CreateAQuota"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-QTA-001 Replace the quota" id="bcb55d14-b641-49a6-8ee2-49b6263af100" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="01SellersAndQuotasTcQta001ReplaceTheQuota"/>
+    <testcase name="TC-QTA-001 status 200" time="0.009" classname="01SellersAndQuotasTcQta001ReplaceTheQuota"/>
+    <testcase name="TC-QTA-001 amount replaced" time="0.009" classname="01SellersAndQuotasTcQta001ReplaceTheQuota"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / Setup: quota 2026-10 S00002" id="74025145-3c2d-4d95-9a1e-7e0fb056af2f" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.010">
+    <testcase name="Response time under 2 s" time="0.010" classname="01SellersAndQuotasSetupQuota202610S00002"/>
+    <testcase name="Setup status 201" time="0.010" classname="01SellersAndQuotasSetupQuota202610S00002"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / Setup: quota 2026-11 S00001" id="96ad243c-3d10-44dc-bf72-bd826aed6750" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="01SellersAndQuotasSetupQuota202611S00001"/>
+    <testcase name="Setup status 201" time="0.009" classname="01SellersAndQuotasSetupQuota202611S00001"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / Setup: quota 2026-11 S00002" id="b986a867-8145-4360-ab5c-f3d96da23c17" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="01SellersAndQuotasSetupQuota202611S00002"/>
+    <testcase name="Setup status 201" time="0.009" classname="01SellersAndQuotasSetupQuota202611S00002"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / Setup: seller S00003 to deactivate" id="0d27cfba-d766-4358-a7ea-81c2dcf0b2ae" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="Response time under 2 s" time="0.006" classname="01SellersAndQuotasSetupSellerS00003ToDeactivate"/>
+    <testcase name="Setup status 201" time="0.006" classname="01SellersAndQuotasSetupSellerS00003ToDeactivate"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-SEL-007 Deactivate a seller" id="1ecd9dc0-69e4-46ba-a6ec-ea86d234d515" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.006">
+    <testcase name="Response time under 2 s" time="0.006" classname="01SellersAndQuotasTcSel007DeactivateASeller"/>
+    <testcase name="TC-SEL-007 status 200" time="0.006" classname="01SellersAndQuotasTcSel007DeactivateASeller"/>
+    <testcase name="TC-SEL-007 status is INACTIVE" time="0.006" classname="01SellersAndQuotasTcSel007DeactivateASeller"/>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-001 Single-seller sale credits the full amount" id="8c1b086b-99ff-46be-a492-3d099ea1cc3d" timestamp="2026-10-09T00:35:35.996Z" tests="4" failures="0" errors="0" time="0.014">
+    <testcase name="Response time under 2 s" time="0.014" classname="02SalesAndCreditingTcTxn001SingleSellerSaleCreditsTheFullAmount"/>
+    <testcase name="TC-TXN-001 status 201" time="0.014" classname="02SalesAndCreditingTcTxn001SingleSellerSaleCreditsTheFullAmount"/>
+    <testcase name="TC-TXN-001 credit lines" time="0.014" classname="02SalesAndCreditingTcTxn001SingleSellerSaleCreditsTheFullAmount"/>
+    <testcase name="TC-TXN-001 posts to 2026-10" time="0.014" classname="02SalesAndCreditingTcTxn001SingleSellerSaleCreditsTheFullAmount"/>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-API-005 Money is a two-decimal string" id="db95f653-01be-45cb-8d06-e234a84c8086" timestamp="2026-10-09T00:35:35.996Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="Response time under 2 s" time="0.006" classname="02SalesAndCreditingTcApi005MoneyIsATwoDecimalString"/>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-002 Two-seller 70/30 split" id="b8d9ec2a-7aa1-40c6-9a1a-f924895aff28" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.014">
+    <testcase name="Response time under 2 s" time="0.014" classname="02SalesAndCreditingTcTxn002TwoSeller7030Split"/>
+    <testcase name="TC-TXN-002 status 201" time="0.014" classname="02SalesAndCreditingTcTxn002TwoSeller7030Split"/>
+    <testcase name="TC-TXN-002 credit lines" time="0.014" classname="02SalesAndCreditingTcTxn002TwoSeller7030Split"/>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-003 Odd-cent split gives the remainder to the first seller" id="a7d70517-8e92-4a37-b8b9-9b3ee6c9f426" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.012">
+    <testcase name="Response time under 2 s" time="0.012" classname="02SalesAndCreditingTcTxn003OddCentSplitGivesTheRemainderToTheFirstSeller"/>
+    <testcase name="TC-TXN-003 status 201" time="0.012" classname="02SalesAndCreditingTcTxn003OddCentSplitGivesTheRemainderToTheFirstSeller"/>
+    <testcase name="TC-TXN-003 credit lines" time="0.012" classname="02SalesAndCreditingTcTxn003OddCentSplitGivesTheRemainderToTheFirstSeller"/>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-005 Splits must add up to 100" id="edab2771-c15e-494a-8679-7c45999402cf" timestamp="2026-10-09T00:35:35.996Z" tests="4" failures="0" errors="0" time="0.005">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.005" classname="02SalesAndCreditingTcTxn005SplitsMustAddUpTo100"/>
+    <testcase name="Response time under 2 s" time="0.005" classname="02SalesAndCreditingTcTxn005SplitsMustAddUpTo100"/>
+    <testcase name="TC-TXN-005 status 422" time="0.005" classname="02SalesAndCreditingTcTxn005SplitsMustAddUpTo100"/>
+    <testcase name="TC-TXN-005 error code INVALID_SPLIT" time="0.005" classname="02SalesAndCreditingTcTxn005SplitsMustAddUpTo100"/>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-009 Inactive seller cannot receive credit" id="e3f73108-8b0b-483c-ba99-e027510a5d43" timestamp="2026-10-09T00:35:35.996Z" tests="4" failures="0" errors="0" time="0.006">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.006" classname="02SalesAndCreditingTcTxn009InactiveSellerCannotReceiveCredit"/>
+    <testcase name="Response time under 2 s" time="0.006" classname="02SalesAndCreditingTcTxn009InactiveSellerCannotReceiveCredit"/>
+    <testcase name="TC-TXN-009 status 422" time="0.006" classname="02SalesAndCreditingTcTxn009InactiveSellerCannotReceiveCredit"/>
+    <testcase name="TC-TXN-009 error code SELLER_INACTIVE" time="0.006" classname="02SalesAndCreditingTcTxn009InactiveSellerCannotReceiveCredit"/>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-012 Duplicate transaction is rejected" id="eb2f501c-229f-4e1e-a52a-c4e4f012d1f4" timestamp="2026-10-09T00:35:35.996Z" tests="4" failures="0" errors="0" time="0.005">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.005" classname="02SalesAndCreditingTcTxn012DuplicateTransactionIsRejected"/>
+    <testcase name="Response time under 2 s" time="0.005" classname="02SalesAndCreditingTcTxn012DuplicateTransactionIsRejected"/>
+    <testcase name="TC-TXN-012 status 409" time="0.005" classname="02SalesAndCreditingTcTxn012DuplicateTransactionIsRejected"/>
+    <testcase name="TC-TXN-012 error code DUPLICATE_TRANSACTION" time="0.005" classname="02SalesAndCreditingTcTxn012DuplicateTransactionIsRejected"/>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-018 Unknown transaction" id="6aa169a4-f32d-4460-a63e-41fdec35fc72" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.007">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.007" classname="02SalesAndCreditingTcTxn018UnknownTransaction"/>
+    <testcase name="Response time under 2 s" time="0.007" classname="02SalesAndCreditingTcTxn018UnknownTransaction"/>
+  </testsuite>
+  <testsuite name="03 Returns and clawback / Setup: sale 10,000.00 split 70/30 on 2026-10-05" id="e5b45c3e-7721-4bdf-b09b-c368f673553b" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.019">
+    <testcase name="Response time under 2 s" time="0.019" classname="03ReturnsAndClawbackSetupSale1000000Split7030On20261005"/>
+    <testcase name="Setup status 201" time="0.019" classname="03ReturnsAndClawbackSetupSale1000000Split7030On20261005"/>
+  </testsuite>
+  <testsuite name="03 Returns and clawback / TC-RET-001 Return in the window mirrors the split" id="67a3736e-aa91-41c0-97d9-1bbda9c133c2" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.019">
+    <testcase name="Response time under 2 s" time="0.019" classname="03ReturnsAndClawbackTcRet001ReturnInTheWindowMirrorsTheSplit"/>
+    <testcase name="TC-RET-001 status 201" time="0.019" classname="03ReturnsAndClawbackTcRet001ReturnInTheWindowMirrorsTheSplit"/>
+    <testcase name="TC-RET-001 credit lines" time="0.019" classname="03ReturnsAndClawbackTcRet001ReturnInTheWindowMirrorsTheSplit"/>
+  </testsuite>
+  <testsuite name="03 Returns and clawback / TC-RET-002 Return on day 30 is clawed back" id="b47f53df-ff6f-4516-b68a-7779861bff0e" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.014">
+    <testcase name="Response time under 2 s" time="0.014" classname="03ReturnsAndClawbackTcRet002ReturnOnDay30IsClawedBack"/>
+    <testcase name="TC-RET-002 status 201" time="0.014" classname="03ReturnsAndClawbackTcRet002ReturnOnDay30IsClawedBack"/>
+    <testcase name="TC-RET-002 credit lines" time="0.014" classname="03ReturnsAndClawbackTcRet002ReturnOnDay30IsClawedBack"/>
+  </testsuite>
+  <testsuite name="03 Returns and clawback / TC-RET-003 Return on day 31 has no clawback" id="67ad289c-1e89-4d89-8e95-95e14a613718" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="03ReturnsAndClawbackTcRet003ReturnOnDay31HasNoClawback"/>
+    <testcase name="TC-RET-003 status 201" time="0.009" classname="03ReturnsAndClawbackTcRet003ReturnOnDay31HasNoClawback"/>
+    <testcase name="TC-RET-003 no credit lines" time="0.009" classname="03ReturnsAndClawbackTcRet003ReturnOnDay31HasNoClawback"/>
+  </testsuite>
+  <testsuite name="03 Returns and clawback / TC-RET-005 Returns cannot exceed the sale" id="cb75beee-727e-46f0-bea8-4969de63c7a9" timestamp="2026-10-09T00:35:35.996Z" tests="4" failures="0" errors="0" time="0.007">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.007" classname="03ReturnsAndClawbackTcRet005ReturnsCannotExceedTheSale"/>
+    <testcase name="Response time under 2 s" time="0.007" classname="03ReturnsAndClawbackTcRet005ReturnsCannotExceedTheSale"/>
+    <testcase name="TC-RET-005 status 422" time="0.007" classname="03ReturnsAndClawbackTcRet005ReturnsCannotExceedTheSale"/>
+    <testcase name="TC-RET-005 error code RETURN_EXCEEDS_SALE" time="0.007" classname="03ReturnsAndClawbackTcRet005ReturnsCannotExceedTheSale"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: seller S00010" id="fdb75953-7a88-4719-94d5-93d0b388c0fb" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.007">
+    <testcase name="Response time under 2 s" time="0.007" classname="04CalculationSetupSellerS00010"/>
+    <testcase name="Setup status 201" time="0.007" classname="04CalculationSetupSellerS00010"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: quota S00010" id="547b4b0a-5462-4db8-bd0c-90adfe1665ac" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Response time under 2 s" time="0.008" classname="04CalculationSetupQuotaS00010"/>
+    <testcase name="Setup status 201" time="0.008" classname="04CalculationSetupQuotaS00010"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: sale for S00010" id="392bd0e5-07da-4297-bc7a-98e54640639a" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.011">
+    <testcase name="Response time under 2 s" time="0.011" classname="04CalculationSetupSaleForS00010"/>
+    <testcase name="Setup status 201" time="0.011" classname="04CalculationSetupSaleForS00010"/>
+  </testsuite>
+  <testsuite name="04 Calculation / TC-CAL-002 49,995.00 shows 50.00% but does not qualify" id="56ab0b01-3d2c-42db-993e-b2d31893ddef" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.007">
+    <testcase name="Response time under 2 s" time="0.007" classname="04CalculationTcCal0024999500Shows5000ButDoesNotQualify"/>
+    <testcase name="TC-CAL-002 status 200" time="0.007" classname="04CalculationTcCal0024999500Shows5000ButDoesNotQualify"/>
+    <testcase name="TC-CAL-002 statement values" time="0.007" classname="04CalculationTcCal0024999500Shows5000ButDoesNotQualify"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: seller S00011" id="1df7741d-9221-4a11-9b45-45461a78a8bd" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.011">
+    <testcase name="Response time under 2 s" time="0.011" classname="04CalculationSetupSellerS00011"/>
+    <testcase name="Setup status 201" time="0.011" classname="04CalculationSetupSellerS00011"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: quota S00011" id="2f6a2bf4-7e09-4656-8b4b-5c1341f9ae1a" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Response time under 2 s" time="0.008" classname="04CalculationSetupQuotaS00011"/>
+    <testcase name="Setup status 201" time="0.008" classname="04CalculationSetupQuotaS00011"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: sale for S00011" id="64e30097-3e82-408f-bb43-6b97d34eb7d7" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="04CalculationSetupSaleForS00011"/>
+    <testcase name="Setup status 201" time="0.009" classname="04CalculationSetupSaleForS00011"/>
+  </testsuite>
+  <testsuite name="04 Calculation / TC-CAL-003 Exactly 50% qualifies" id="30ecadd8-5f5b-41cb-b0b2-e09698a46c05" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.006">
+    <testcase name="Response time under 2 s" time="0.006" classname="04CalculationTcCal003Exactly50Qualifies"/>
+    <testcase name="TC-CAL-003 status 200" time="0.006" classname="04CalculationTcCal003Exactly50Qualifies"/>
+    <testcase name="TC-CAL-003 statement values" time="0.006" classname="04CalculationTcCal003Exactly50Qualifies"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: seller S00012" id="7afdabfc-e032-42b0-b847-60022416c8b5" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.012">
+    <testcase name="Response time under 2 s" time="0.012" classname="04CalculationSetupSellerS00012"/>
+    <testcase name="Setup status 201" time="0.012" classname="04CalculationSetupSellerS00012"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: quota S00012" id="291761aa-adf4-46ca-a2d3-ba6f79e23be1" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="04CalculationSetupQuotaS00012"/>
+    <testcase name="Setup status 201" time="0.009" classname="04CalculationSetupQuotaS00012"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: sale for S00012" id="c8fd405e-f2e4-4b0f-88e0-6cf8739ab482" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.010">
+    <testcase name="Response time under 2 s" time="0.010" classname="04CalculationSetupSaleForS00012"/>
+    <testcase name="Setup status 201" time="0.010" classname="04CalculationSetupSaleForS00012"/>
+  </testsuite>
+  <testsuite name="04 Calculation / TC-CAL-005 Exactly 100%" id="a99de58f-f1cf-4d0a-96f1-7f3178d96e6d" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.006">
+    <testcase name="Response time under 2 s" time="0.006" classname="04CalculationTcCal005Exactly100"/>
+    <testcase name="TC-CAL-005 status 200" time="0.006" classname="04CalculationTcCal005Exactly100"/>
+    <testcase name="TC-CAL-005 statement values" time="0.006" classname="04CalculationTcCal005Exactly100"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: seller S00013" id="ec52daa0-dd95-4518-90cf-f5f39a95760b" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="04CalculationSetupSellerS00013"/>
+    <testcase name="Setup status 201" time="0.009" classname="04CalculationSetupSellerS00013"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: quota S00013" id="d30c5cf9-9fb4-4cb9-98c2-b4e806e68714" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.010">
+    <testcase name="Response time under 2 s" time="0.010" classname="04CalculationSetupQuotaS00013"/>
+    <testcase name="Setup status 201" time="0.010" classname="04CalculationSetupQuotaS00013"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: sale for S00013" id="2094739f-2588-48f0-9fcd-859780d2ffb1" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.011">
+    <testcase name="Response time under 2 s" time="0.011" classname="04CalculationSetupSaleForS00013"/>
+    <testcase name="Setup status 201" time="0.011" classname="04CalculationSetupSaleForS00013"/>
+  </testsuite>
+  <testsuite name="04 Calculation / TC-CAL-008 250% is capped" id="f44b199f-eee5-4d55-b702-c2f10bd9b1fb" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.007">
+    <testcase name="Response time under 2 s" time="0.007" classname="04CalculationTcCal008250IsCapped"/>
+    <testcase name="TC-CAL-008 status 200" time="0.007" classname="04CalculationTcCal008250IsCapped"/>
+    <testcase name="TC-CAL-008 statement values" time="0.007" classname="04CalculationTcCal008250IsCapped"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: seller S00014" id="f8efff9e-563d-49d5-a39d-25c4e04f66ca" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="Response time under 2 s" time="0.006" classname="04CalculationSetupSellerS00014"/>
+    <testcase name="Setup status 201" time="0.006" classname="04CalculationSetupSellerS00014"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: quota S00014" id="39009f49-7661-418c-926e-24d10f3847df" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.007">
+    <testcase name="Response time under 2 s" time="0.007" classname="04CalculationSetupQuotaS00014"/>
+    <testcase name="Setup status 201" time="0.007" classname="04CalculationSetupQuotaS00014"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: sale for S00014" id="6bf1c3b4-f766-4093-89f6-ab2fdbb1dbc4" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.011">
+    <testcase name="Response time under 2 s" time="0.011" classname="04CalculationSetupSaleForS00014"/>
+    <testcase name="Setup status 201" time="0.011" classname="04CalculationSetupSaleForS00014"/>
+  </testsuite>
+  <testsuite name="04 Calculation / TC-CAL-010 Half-cent tie rounds up" id="3b0fd9ac-e522-48a0-b7fa-07fb8cd561c0" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.006">
+    <testcase name="Response time under 2 s" time="0.006" classname="04CalculationTcCal010HalfCentTieRoundsUp"/>
+    <testcase name="TC-CAL-010 status 200" time="0.006" classname="04CalculationTcCal010HalfCentTieRoundsUp"/>
+    <testcase name="TC-CAL-010 statement values" time="0.006" classname="04CalculationTcCal010HalfCentTieRoundsUp"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: seller S00015" id="cda4e5d4-96bb-4180-8edd-3ce5edb2c65f" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.007">
+    <testcase name="Response time under 2 s" time="0.007" classname="04CalculationSetupSellerS00015"/>
+    <testcase name="Setup status 201" time="0.007" classname="04CalculationSetupSellerS00015"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: quota S00015" id="a2bc9d25-5c52-471d-b3c3-35fbdd6763ca" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.015">
+    <testcase name="Response time under 2 s" time="0.015" classname="04CalculationSetupQuotaS00015"/>
+    <testcase name="Setup status 201" time="0.015" classname="04CalculationSetupQuotaS00015"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: sale for S00015" id="9a25fe4d-8c96-4801-aed9-5cbe02b609d5" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.011">
+    <testcase name="Response time under 2 s" time="0.011" classname="04CalculationSetupSaleForS00015"/>
+    <testcase name="Setup status 201" time="0.011" classname="04CalculationSetupSaleForS00015"/>
+  </testsuite>
+  <testsuite name="04 Calculation / TC-CAL-012 Band breakdown at 150%" id="88e1f067-5dc6-4afd-8e34-89513ef200f4" timestamp="2026-10-09T00:35:35.996Z" tests="4" failures="0" errors="0" time="0.006">
+    <testcase name="Response time under 2 s" time="0.006" classname="04CalculationTcCal012BandBreakdownAt150"/>
+    <testcase name="TC-CAL-012 status 200" time="0.006" classname="04CalculationTcCal012BandBreakdownAt150"/>
+    <testcase name="TC-CAL-012 statement values" time="0.006" classname="04CalculationTcCal012BandBreakdownAt150"/>
+    <testcase name="TC-CAL-012 band breakdown" time="0.006" classname="04CalculationTcCal012BandBreakdownAt150"/>
+  </testsuite>
+  <testsuite name="05 Import / TC-IMP-001 Batch with a sale and a same-batch return" id="3d465194-11b1-4ba8-b2a0-785885353f03" timestamp="2026-10-09T00:35:35.996Z" tests="3" failures="0" errors="0" time="0.016">
+    <testcase name="Response time under 2 s" time="0.016" classname="05ImportTcImp001BatchWithASaleAndASameBatchReturn"/>
+    <testcase name="TC-IMP-001 status 201" time="0.016" classname="05ImportTcImp001BatchWithASaleAndASameBatchReturn"/>
+    <testcase name="TC-IMP-001 counts" time="0.016" classname="05ImportTcImp001BatchWithASaleAndASameBatchReturn"/>
+  </testsuite>
+  <testsuite name="05 Import / TC-IMP-002 One invalid row rejects the whole batch" id="06a4fb60-c032-4c16-b80e-7dd4830d569e" timestamp="2026-10-09T00:35:35.996Z" tests="5" failures="0" errors="0" time="0.010">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.010" classname="05ImportTcImp002OneInvalidRowRejectsTheWholeBatch"/>
+    <testcase name="Response time under 2 s" time="0.010" classname="05ImportTcImp002OneInvalidRowRejectsTheWholeBatch"/>
+    <testcase name="TC-IMP-002 status 422" time="0.010" classname="05ImportTcImp002OneInvalidRowRejectsTheWholeBatch"/>
+    <testcase name="TC-IMP-002 error code IMPORT_REJECTED" time="0.010" classname="05ImportTcImp002OneInvalidRowRejectsTheWholeBatch"/>
+    <testcase name="TC-IMP-002 reports row 1 UNKNOWN_SELLER" time="0.010" classname="05ImportTcImp002OneInvalidRowRejectsTheWholeBatch"/>
+  </testsuite>
+  <testsuite name="05 Import / TC-IMP-002 Valid row of the rejected batch was not stored" id="dccf3adb-3a94-477c-8c55-a1bf6e328942" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.005">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.005" classname="05ImportTcImp002ValidRowOfTheRejectedBatchWasNotStored"/>
+    <testcase name="Response time under 2 s" time="0.005" classname="05ImportTcImp002ValidRowOfTheRejectedBatchWasNotStored"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-CLS-003 Periods close in order" id="79605738-ff0f-4f19-8b37-7ee3c2f3a106" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.007">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.007" classname="06CloseAndLockTcCls003PeriodsCloseInOrder"/>
+    <testcase name="Response time under 2 s" time="0.007" classname="06CloseAndLockTcCls003PeriodsCloseInOrder"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-CLS-001 Close 2026-10" id="50705d0a-65cb-4581-ad7c-ed59a192afd7" timestamp="2026-10-09T00:35:35.996Z" tests="1" failures="0" errors="0" time="0.022">
+    <testcase name="Response time under 2 s" time="0.022" classname="06CloseAndLockTcCls001Close202610"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-CLS-001 Total payout equals the stored rows" id="26f30a2b-08b3-4c4a-84d4-33293da80b7a" timestamp="2026-10-09T00:35:35.996Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="Response time under 2 s" time="0.006" classname="06CloseAndLockTcCls001TotalPayoutEqualsTheStoredRows"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-CLS-002 Closing twice is rejected" id="5d073f56-a44b-4b59-8da4-05a626d9d5e6" timestamp="2026-10-09T00:35:35.996Z" tests="2" failures="0" errors="0" time="0.005">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.005" classname="06CloseAndLockTcCls002ClosingTwiceIsRejected"/>
+    <testcase name="Response time under 2 s" time="0.005" classname="06CloseAndLockTcCls002ClosingTwiceIsRejected"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-CLS-007 Statement after close uses stored values" id="43209da4-e84d-4c3c-88af-6ccb5b902cc8" timestamp="2026-10-09T00:35:35.996Z" tests="1" failures="0" errors="0" time="0.008">
+    <testcase name="Response time under 2 s" time="0.008" classname="06CloseAndLockTcCls007StatementAfterCloseUsesStoredValues"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-TXN-015 Sale dated in a closed period" id="09424d0b-5945-49a4-abc0-e9f65b0bb48f" timestamp="2026-10-09T00:35:35.996Z" tests="4" failures="0" errors="0" time="0.006">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.006" classname="06CloseAndLockTcTxn015SaleDatedInAClosedPeriod"/>
+    <testcase name="Response time under 2 s" time="0.006" classname="06CloseAndLockTcTxn015SaleDatedInAClosedPeriod"/>
+    <testcase name="TC-TXN-015 status 409" time="0.006" classname="06CloseAndLockTcTxn015SaleDatedInAClosedPeriod"/>
+    <testcase name="TC-TXN-015 error code PERIOD_CLOSED" time="0.006" classname="06CloseAndLockTcTxn015SaleDatedInAClosedPeriod"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-CLS-006 Return dated in a closed period" id="f9a4e4c5-504f-4262-9214-c49aab93be50" timestamp="2026-10-09T00:35:35.996Z" tests="4" failures="0" errors="0" time="0.006">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.006" classname="06CloseAndLockTcCls006ReturnDatedInAClosedPeriod"/>
+    <testcase name="Response time under 2 s" time="0.006" classname="06CloseAndLockTcCls006ReturnDatedInAClosedPeriod"/>
+    <testcase name="TC-CLS-006 status 409" time="0.006" classname="06CloseAndLockTcCls006ReturnDatedInAClosedPeriod"/>
+    <testcase name="TC-CLS-006 error code PERIOD_CLOSED" time="0.006" classname="06CloseAndLockTcCls006ReturnDatedInAClosedPeriod"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-QTA-004 Quota change in a closed period" id="ad44bc5f-6e37-4a0a-938d-06414026227c" timestamp="2026-10-09T00:35:35.996Z" tests="4" failures="0" errors="0" time="0.006">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.006" classname="06CloseAndLockTcQta004QuotaChangeInAClosedPeriod"/>
+    <testcase name="Response time under 2 s" time="0.006" classname="06CloseAndLockTcQta004QuotaChangeInAClosedPeriod"/>
+    <testcase name="TC-QTA-004 status 409" time="0.006" classname="06CloseAndLockTcQta004QuotaChangeInAClosedPeriod"/>
+    <testcase name="TC-QTA-004 error code PERIOD_CLOSED" time="0.006" classname="06CloseAndLockTcQta004QuotaChangeInAClosedPeriod"/>
+  </testsuite>
+</testsuites>

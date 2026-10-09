@@ -51,7 +51,7 @@ Severity: S2 Major
 {{payout}} ""50.00"".
 
 *Impact*
-One cent under on every payout whose exact value ends in 5 at the third decimal. In the dataset: 5 statements underpaid by 0.01, four of them ordinary sellers from the random data, not the crafted boundary seller."
+One cent under on every payout whose exact value ends in 5 at the third decimal. In the dataset: 4 payouts underpaid by 0.01. Three of them belong to ordinary sellers from the random data, not to the crafted boundary seller."
 [BUG-004] Returns made exactly 30 days after the sale are not clawed back,Bug,High,commission-engine,severity-s2,req-ret-04,Returns,0.1.0-rc1,"Build 0.1.0-rc1 (tag v0.1.0-rc1), Python 3.13, FastAPI 0.143, SQLModel 0.0.48, Ubuntu 24.04","Bug file in the repo: bugs/BUG-004.md
 Requirement: REQ-RET-04
 Found by: TC-RET-002, TC-REC-001
@@ -86,7 +86,7 @@ Severity: S2 Major
 -70.00 for S00001 and -30.01 for S00002.
 
 *Impact*
-The return still nets to -100.01, but each seller's statement is off by one cent. In the dataset: 171 seller statements with a credited amount off by 0.01, one of which also changes the payout by 0.01."
+The return still nets to -100.01, but each seller's statement is off by one cent per return. In the dataset: 171 seller statements with a wrong credited amount (162 of them only because of this defect, off by 0.01 to 0.05), and 2 payouts changed by 0.01."
 [BUG-006] Displayed attainment and band commissions use banker's rounding on ties,Bug,Medium,commission-engine,severity-s3,req-cal-06,Statements,0.1.0-rc1,"Build 0.1.0-rc1 (tag v0.1.0-rc1), Python 3.13, FastAPI 0.143, SQLModel 0.0.48, Ubuntu 24.04","Bug file in the repo: bugs/BUG-006.md
 Requirement: REQ-CAL-06, REQ-STM-03
 Found by: TC-CAL-010, TC-CAL-014, TC-CAL-015
