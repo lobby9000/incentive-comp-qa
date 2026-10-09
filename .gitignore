@@ -8,3 +8,5 @@ __pycache__/
 mutants/
 node_modules/
 reports/tmp/
+reports/**/server.log
+reports/**/newman.json

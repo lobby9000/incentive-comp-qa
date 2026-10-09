@@ -1,0 +1,2657 @@
+{
+  "info": {
+    "name": "Commission Engine QA",
+    "description": "Contract and functional checks for the Commission Engine API (plan RET-Q4-2026). Run in order against a fresh database. Request names carry the test case IDs of docs/03-test-cases.csv.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (pm.response.code >= 400) {",
+          "    pm.test(\"Error body follows the REQ-API-01 envelope\", function () {",
+          "        const j = pm.response.json();",
+          "        pm.expect(j).to.have.property(\"error\");",
+          "        pm.expect(j.error).to.have.all.keys(\"code\", \"message\", \"details\");",
+          "    });",
+          "}",
+          "pm.test(\"Response time under 2 s\", function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+          "});"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "octTotal",
+      "value": ""
+    },
+    {
+      "key": "octSellers",
+      "value": ""
+    },
+    {
+      "key": "buildVersion",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "00 Smoke",
+      "item": [
+        {
+          "name": "TC-API-001 Health answers with status and version",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-API-001 status 200\", function () { pm.response.to.have.status(200); });",
+                  "",
+                  "pm.test(\"TC-API-001 status ok and version\", function () {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j.status).to.eql(\"ok\");",
+                  "    pm.expect(j.version).to.be.a(\"string\").and.not.empty;",
+                  "    pm.collectionVariables.set(\"buildVersion\", j.version);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "01 Sellers and quotas",
+      "item": [
+        {
+          "name": "TC-SEL-001 Create a seller",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seller_id\": \"S00001\",\n  \"name\": \"Ana Garc\\u00eda\",\n  \"store_id\": \"T1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-SEL-001 status 201\", function () { pm.response.to.have.status(201); });",
+                  "",
+                  "pm.test(\"TC-SEL-001 body echoes input and is ACTIVE\", function () {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.eql({seller_id: \"S00001\", name: \"Ana García\", store_id: \"T1000\", status: \"ACTIVE\"});",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: seller S00002 in T1000",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seller_id\": \"S00002\",\n  \"name\": \"Luis P\\u00e9rez\",\n  \"store_id\": \"T1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-SEL-002 Duplicate seller is rejected",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seller_id\": \"S00001\",\n  \"name\": \"Ana Garc\\u00eda\",\n  \"store_id\": \"T1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-SEL-002 status 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"TC-SEL-002 error code DUPLICATE_SELLER\", function () {",
+                  "    pm.expect(pm.response.json().error.code).to.eql(\"DUPLICATE_SELLER\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-API-002 Unknown seller uses the standard error body",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers/S99999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers",
+                "S99999"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "\"pm.test(\\\"TC-API-002 status 404\\\", function () { pm.response.to.have.status(404); });\\npm.test(\\\"TC-API-002 error code SELLER_NOT_FOUND\\\", function () {\\n    pm.expect(pm.response.json().error.code).to.eql(\\\"SELLER_NOT_FOUND\\\");\\n});\\n\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": []
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-API-003 Missing field reports VALIDATION_ERROR",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seller_id\": \"S00009\",\n  \"store_id\": \"T1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-API-003 status 422\", function () { pm.response.to.have.status(422); });",
+                  "pm.test(\"TC-API-003 error code VALIDATION_ERROR\", function () {",
+                  "    pm.expect(pm.response.json().error.code).to.eql(\"VALIDATION_ERROR\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-QTA-001 Create a quota",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/quotas/S00001",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "quotas",
+                "S00001"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"90000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-QTA-001 status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-QTA-001 Replace the quota",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/quotas/S00001",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "quotas",
+                "S00001"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"100000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-QTA-001 status 200\", function () { pm.response.to.have.status(200); });",
+                  "",
+                  "pm.test(\"TC-QTA-001 amount replaced\", function () { pm.expect(pm.response.json().amount).to.eql(\"100000.00\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: quota 2026-10 S00002",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/quotas/S00002",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "quotas",
+                "S00002"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"100000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: quota 2026-11 S00001",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-11/quotas/S00001",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-11",
+                "quotas",
+                "S00001"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"100000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: quota 2026-11 S00002",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-11/quotas/S00002",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-11",
+                "quotas",
+                "S00002"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"100000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: seller S00003 to deactivate",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seller_id\": \"S00003\",\n  \"name\": \"Sof\\u00eda Ruiz\",\n  \"store_id\": \"T1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-SEL-007 Deactivate a seller",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers/S00003",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers",
+                "S00003"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"INACTIVE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-SEL-007 status 200\", function () { pm.response.to.have.status(200); });",
+                  "",
+                  "pm.test(\"TC-SEL-007 status is INACTIVE\", function () { pm.expect(pm.response.json().status).to.eql(\"INACTIVE\"); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 Sales and crediting",
+      "item": [
+        {
+          "name": "TC-TXN-001 Single-seller sale credits the full amount",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-SALE-1\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-15\",\n  \"store_id\": \"T1000\",\n  \"amount\": 1500.5,\n  \"credits\": [\n    {\n      \"seller_id\": \"S00001\",\n      \"split_pct\": 100\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TXN-001 status 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"TC-TXN-001 credit lines\", function () {",
+                  "    const got = {};",
+                  "    pm.response.json().credits.forEach(function (c) { got[c.seller_id] = c.credit; });",
+                  "    pm.expect(got).to.eql({\"S00001\": \"1500.50\"});",
+                  "});",
+                  "",
+                  "pm.test(\"TC-TXN-001 posts to 2026-10\", function () { pm.expect(pm.response.json().period_id).to.eql(\"2026-10\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-API-005 Money is a two-decimal string",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions/PM-SALE-1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions",
+                "PM-SALE-1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "\"pm.test(\\\"TC-API-005 status 200\\\", function () { pm.response.to.have.status(200); });\\n\\npm.test(\\\"TC-API-005 amount and credit are strings with two decimals\\\", function () {\\n    const j = pm.response.json();\\n    pm.expect(j.amount).to.eql(\\\"1500.50\\\");\\n    pm.expect(j.credits[0].credit).to.eql(\\\"1500.50\\\");\\n});\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": []
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TXN-002 Two-seller 70/30 split",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-SALE-2\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-16\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"10000.00\",\n  \"credits\": [\n    {\n      \"seller_id\": \"S00001\",\n      \"split_pct\": 70\n    },\n    {\n      \"seller_id\": \"S00002\",\n      \"split_pct\": 30\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TXN-002 status 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"TC-TXN-002 credit lines\", function () {",
+                  "    const got = {};",
+                  "    pm.response.json().credits.forEach(function (c) { got[c.seller_id] = c.credit; });",
+                  "    pm.expect(got).to.eql({\"S00001\": \"7000.00\", \"S00002\": \"3000.00\"});",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TXN-003 Odd-cent split gives the remainder to the first seller",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-SALE-3\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-16\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"100.01\",\n  \"credits\": [\n    {\n      \"seller_id\": \"S00001\",\n      \"split_pct\": 50\n    },\n    {\n      \"seller_id\": \"S00002\",\n      \"split_pct\": 50\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TXN-003 status 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"TC-TXN-003 credit lines\", function () {",
+                  "    const got = {};",
+                  "    pm.response.json().credits.forEach(function (c) { got[c.seller_id] = c.credit; });",
+                  "    pm.expect(got).to.eql({\"S00001\": \"50.01\", \"S00002\": \"50.00\"});",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TXN-005 Splits must add up to 100",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-SALE-4\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-16\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"100.00\",\n  \"credits\": [\n    {\n      \"seller_id\": \"S00001\",\n      \"split_pct\": 60\n    },\n    {\n      \"seller_id\": \"S00002\",\n      \"split_pct\": 39\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TXN-005 status 422\", function () { pm.response.to.have.status(422); });",
+                  "pm.test(\"TC-TXN-005 error code INVALID_SPLIT\", function () {",
+                  "    pm.expect(pm.response.json().error.code).to.eql(\"INVALID_SPLIT\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TXN-009 Inactive seller cannot receive credit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-SALE-5\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-16\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"100.00\",\n  \"credits\": [\n    {\n      \"seller_id\": \"S00003\",\n      \"split_pct\": 100\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TXN-009 status 422\", function () { pm.response.to.have.status(422); });",
+                  "pm.test(\"TC-TXN-009 error code SELLER_INACTIVE\", function () {",
+                  "    pm.expect(pm.response.json().error.code).to.eql(\"SELLER_INACTIVE\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TXN-012 Duplicate transaction is rejected",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-SALE-1\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-15\",\n  \"store_id\": \"T1000\",\n  \"amount\": 1500.5,\n  \"credits\": [\n    {\n      \"seller_id\": \"S00001\",\n      \"split_pct\": 100\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TXN-012 status 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"TC-TXN-012 error code DUPLICATE_TRANSACTION\", function () {",
+                  "    pm.expect(pm.response.json().error.code).to.eql(\"DUPLICATE_TRANSACTION\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TXN-018 Unknown transaction",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions/NOPE-404",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions",
+                "NOPE-404"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "\"pm.test(\\\"TC-TXN-018 status 404\\\", function () { pm.response.to.have.status(404); });\\npm.test(\\\"TC-TXN-018 error code TRANSACTION_NOT_FOUND\\\", function () {\\n    pm.expect(pm.response.json().error.code).to.eql(\\\"TRANSACTION_NOT_FOUND\\\");\\n});\\n\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 Returns and clawback",
+      "item": [
+        {
+          "name": "Setup: sale 10,000.00 split 70/30 on 2026-10-05",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-BASE\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-05\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"10000.00\",\n  \"credits\": [\n    {\n      \"seller_id\": \"S00001\",\n      \"split_pct\": 70\n    },\n    {\n      \"seller_id\": \"S00002\",\n      \"split_pct\": 30\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-RET-001 Return in the window mirrors the split",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-RET-1\",\n  \"type\": \"RETURN\",\n  \"txn_date\": \"2026-10-20\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"2000.00\",\n  \"original_transaction_id\": \"PM-BASE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-RET-001 status 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"TC-RET-001 credit lines\", function () {",
+                  "    const got = {};",
+                  "    pm.response.json().credits.forEach(function (c) { got[c.seller_id] = c.credit; });",
+                  "    pm.expect(got).to.eql({\"S00001\": \"-1400.00\", \"S00002\": \"-600.00\"});",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-RET-002 Return on day 30 is clawed back",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-RET-2\",\n  \"type\": \"RETURN\",\n  \"txn_date\": \"2026-11-04\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"1000.00\",\n  \"original_transaction_id\": \"PM-BASE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-RET-002 status 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"TC-RET-002 credit lines\", function () {",
+                  "    const got = {};",
+                  "    pm.response.json().credits.forEach(function (c) { got[c.seller_id] = c.credit; });",
+                  "    pm.expect(got).to.eql({\"S00001\": \"-700.00\", \"S00002\": \"-300.00\"});",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-RET-003 Return on day 31 has no clawback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-RET-3\",\n  \"type\": \"RETURN\",\n  \"txn_date\": \"2026-11-05\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"1000.00\",\n  \"original_transaction_id\": \"PM-BASE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-RET-003 status 201\", function () { pm.response.to.have.status(201); });",
+                  "",
+                  "pm.test(\"TC-RET-003 no credit lines\", function () { pm.expect(pm.response.json().credits).to.eql([]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-RET-005 Returns cannot exceed the sale",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-RET-4\",\n  \"type\": \"RETURN\",\n  \"txn_date\": \"2026-11-06\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"6000.01\",\n  \"original_transaction_id\": \"PM-BASE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-RET-005 status 422\", function () { pm.response.to.have.status(422); });",
+                  "pm.test(\"TC-RET-005 error code RETURN_EXCEEDS_SALE\", function () {",
+                  "    pm.expect(pm.response.json().error.code).to.eql(\"RETURN_EXCEEDS_SALE\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 Calculation",
+      "item": [
+        {
+          "name": "Setup: seller S00010",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seller_id\": \"S00010\",\n  \"name\": \"Calc S00010\",\n  \"store_id\": \"T1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: quota S00010",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/quotas/S00010",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "quotas",
+                "S00010"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"100000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: sale for S00010",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-S00010\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-20\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"49995.00\",\n  \"credits\": [\n    {\n      \"seller_id\": \"S00010\",\n      \"split_pct\": 100\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-CAL-002 49,995.00 shows 50.00% but does not qualify",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/sellers/S00010/statement",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "sellers",
+                "S00010",
+                "statement"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-CAL-002 status 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"TC-CAL-002 statement values\", function () {",
+                  "    const s = pm.response.json();",
+                  "    pm.expect([s.attainment_pct, s.qualified, s.payout]).to.eql([\"50.00\", false, \"0.00\"]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: seller S00011",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seller_id\": \"S00011\",\n  \"name\": \"Calc S00011\",\n  \"store_id\": \"T1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: quota S00011",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/quotas/S00011",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "quotas",
+                "S00011"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"100000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: sale for S00011",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-S00011\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-20\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"50000.00\",\n  \"credits\": [\n    {\n      \"seller_id\": \"S00011\",\n      \"split_pct\": 100\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-CAL-003 Exactly 50% qualifies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/sellers/S00011/statement",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "sellers",
+                "S00011",
+                "statement"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-CAL-003 status 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"TC-CAL-003 statement values\", function () {",
+                  "    const s = pm.response.json();",
+                  "    pm.expect([s.attainment_pct, s.qualified, s.payout]).to.eql([\"50.00\", true, \"500.00\"]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: seller S00012",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seller_id\": \"S00012\",\n  \"name\": \"Calc S00012\",\n  \"store_id\": \"T1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: quota S00012",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/quotas/S00012",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "quotas",
+                "S00012"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"100000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: sale for S00012",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-S00012\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-20\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"100000.00\",\n  \"credits\": [\n    {\n      \"seller_id\": \"S00012\",\n      \"split_pct\": 100\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-CAL-005 Exactly 100%",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/sellers/S00012/statement",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "sellers",
+                "S00012",
+                "statement"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-CAL-005 status 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"TC-CAL-005 statement values\", function () {",
+                  "    const s = pm.response.json();",
+                  "    pm.expect([s.attainment_pct, s.qualified, s.payout]).to.eql([\"100.00\", true, \"1300.00\"]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: seller S00013",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seller_id\": \"S00013\",\n  \"name\": \"Calc S00013\",\n  \"store_id\": \"T1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: quota S00013",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/quotas/S00013",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "quotas",
+                "S00013"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"100000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: sale for S00013",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-S00013\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-20\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"250000.00\",\n  \"credits\": [\n    {\n      \"seller_id\": \"S00013\",\n      \"split_pct\": 100\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-CAL-008 250% is capped",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/sellers/S00013/statement",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "sellers",
+                "S00013",
+                "statement"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-CAL-008 status 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"TC-CAL-008 statement values\", function () {",
+                  "    const s = pm.response.json();",
+                  "    pm.expect([s.attainment_pct, s.qualified, s.payout]).to.eql([\"250.00\", true, \"5800.00\"]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: seller S00014",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seller_id\": \"S00014\",\n  \"name\": \"Calc S00014\",\n  \"store_id\": \"T1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: quota S00014",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/quotas/S00014",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "quotas",
+                "S00014"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"10000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: sale for S00014",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-S00014\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-20\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"5000.50\",\n  \"credits\": [\n    {\n      \"seller_id\": \"S00014\",\n      \"split_pct\": 100\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-CAL-010 Half-cent tie rounds up",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/sellers/S00014/statement",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "sellers",
+                "S00014",
+                "statement"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-CAL-010 status 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"TC-CAL-010 statement values\", function () {",
+                  "    const s = pm.response.json();",
+                  "    pm.expect([s.attainment_pct, s.qualified, s.payout]).to.eql([\"50.01\", true, \"50.01\"]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: seller S00015",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sellers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sellers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seller_id\": \"S00015\",\n  \"name\": \"Calc S00015\",\n  \"store_id\": \"T1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: quota S00015",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/quotas/S00015",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "quotas",
+                "S00015"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"100000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Setup: sale for S00015",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-S00015\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-20\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"150000.00\",\n  \"credits\": [\n    {\n      \"seller_id\": \"S00015\",\n      \"split_pct\": 100\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Setup status 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-CAL-012 Band breakdown at 150%",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/sellers/S00015/statement",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "sellers",
+                "S00015",
+                "statement"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-CAL-012 status 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"TC-CAL-012 statement values\", function () {",
+                  "    const s = pm.response.json();",
+                  "    pm.expect([s.attainment_pct, s.qualified, s.payout]).to.eql([\"150.00\", true, \"3300.00\"]);",
+                  "});",
+                  "",
+                  "pm.test(\"TC-CAL-012 band breakdown\", function () {",
+                  "    const b = {};",
+                  "    pm.response.json().bands.forEach(function (x) { b[x.band] = [x.base, x.commission]; });",
+                  "    pm.expect(b).to.eql({A: [\"80000.00\", \"800.00\"], B: [\"20000.00\", \"500.00\"],",
+                  "                         C: [\"50000.00\", \"2000.00\"], D: [\"0.00\", \"0.00\"]});",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 Import",
+      "item": [
+        {
+          "name": "TC-IMP-001 Batch with a sale and a same-batch return",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/imports/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "imports",
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transactions\": [\n    {\n      \"transaction_id\": \"PM-IMP-1\",\n      \"type\": \"SALE\",\n      \"txn_date\": \"2026-10-21\",\n      \"store_id\": \"T1000\",\n      \"amount\": \"300.00\",\n      \"credits\": [\n        {\n          \"seller_id\": \"S00001\",\n          \"split_pct\": 100\n        }\n      ]\n    },\n    {\n      \"transaction_id\": \"PM-IMP-2\",\n      \"type\": \"RETURN\",\n      \"txn_date\": \"2026-10-22\",\n      \"store_id\": \"T1000\",\n      \"amount\": \"100.00\",\n      \"original_transaction_id\": \"PM-IMP-1\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-IMP-001 status 201\", function () { pm.response.to.have.status(201); });",
+                  "",
+                  "pm.test(\"TC-IMP-001 counts\", function () {",
+                  "    pm.expect(pm.response.json()).to.eql({imported: 2, sales: 1, returns: 1, credits: 2});",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-IMP-002 One invalid row rejects the whole batch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/imports/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "imports",
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transactions\": [\n    {\n      \"transaction_id\": \"PM-IMP-3\",\n      \"type\": \"SALE\",\n      \"txn_date\": \"2026-10-21\",\n      \"store_id\": \"T1000\",\n      \"amount\": \"100.00\",\n      \"credits\": [\n        {\n          \"seller_id\": \"S00001\",\n          \"split_pct\": 100\n        }\n      ]\n    },\n    {\n      \"transaction_id\": \"PM-IMP-4\",\n      \"type\": \"SALE\",\n      \"txn_date\": \"2026-10-21\",\n      \"store_id\": \"T1000\",\n      \"amount\": \"100.00\",\n      \"credits\": [\n        {\n          \"seller_id\": \"S99999\",\n          \"split_pct\": 100\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-IMP-002 status 422\", function () { pm.response.to.have.status(422); });",
+                  "pm.test(\"TC-IMP-002 error code IMPORT_REJECTED\", function () {",
+                  "    pm.expect(pm.response.json().error.code).to.eql(\"IMPORT_REJECTED\");",
+                  "});",
+                  "",
+                  "pm.test(\"TC-IMP-002 reports row 1 UNKNOWN_SELLER\", function () {",
+                  "    const d = pm.response.json().error.details;",
+                  "    pm.expect(d.map(function (x) { return [x.row, x.code]; })).to.eql([[1, \"UNKNOWN_SELLER\"]]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-IMP-002 Valid row of the rejected batch was not stored",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions/PM-IMP-3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions",
+                "PM-IMP-3"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "\"pm.test(\\\"TC-IMP-002 status 404\\\", function () { pm.response.to.have.status(404); });\\npm.test(\\\"TC-IMP-002 error code TRANSACTION_NOT_FOUND\\\", function () {\\n    pm.expect(pm.response.json().error.code).to.eql(\\\"TRANSACTION_NOT_FOUND\\\");\\n});\\n\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 Close and lock",
+      "item": [
+        {
+          "name": "TC-CLS-003 Periods close in order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-11/close",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-11",
+                "close"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "\"pm.test(\\\"TC-CLS-003 status 409\\\", function () { pm.response.to.have.status(409); });\\npm.test(\\\"TC-CLS-003 error code PREVIOUS_PERIOD_OPEN\\\", function () {\\n    pm.expect(pm.response.json().error.code).to.eql(\\\"PREVIOUS_PERIOD_OPEN\\\");\\n});\\n\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": []
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-CLS-001 Close 2026-10",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/close",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "close"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "\"pm.test(\\\"TC-CLS-001 status 200\\\", function () { pm.response.to.have.status(200); });\\n\\npm.test(\\\"TC-CLS-001 close summary\\\", function () {\\n    const j = pm.response.json();\\n    pm.expect(j.status).to.eql(\\\"CLOSED\\\");\\n    pm.collectionVariables.set(\\\"octTotal\\\", j.total_payout);\\n    pm.collectionVariables.set(\\\"octSellers\\\", j.sellers);\\n});\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": []
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-CLS-001 Total payout equals the stored rows",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/payouts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "payouts"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "\"pm.test(\\\"TC-CLS-001 status 200\\\", function () { pm.response.to.have.status(200); });\\n\\npm.test(\\\"TC-CLS-001 rows and total agree with the close response\\\", function () {\\n    const rows = pm.response.json();\\n    let cents = 0;\\n    rows.forEach(function (r) { cents += Math.round(parseFloat(r.payout) * 100); });\\n    pm.expect(rows.length).to.eql(Number(pm.collectionVariables.get(\\\"octSellers\\\")));\\n    pm.expect((cents / 100).toFixed(2)).to.eql(pm.collectionVariables.get(\\\"octTotal\\\"));\\n});\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": []
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-CLS-002 Closing twice is rejected",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/close",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "close"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "\"pm.test(\\\"TC-CLS-002 status 409\\\", function () { pm.response.to.have.status(409); });\\npm.test(\\\"TC-CLS-002 error code PERIOD_ALREADY_CLOSED\\\", function () {\\n    pm.expect(pm.response.json().error.code).to.eql(\\\"PERIOD_ALREADY_CLOSED\\\");\\n});\\n\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": []
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-CLS-007 Statement after close uses stored values",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/sellers/S00011/statement",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "sellers",
+                "S00011",
+                "statement"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "\"pm.test(\\\"TC-CLS-007 status 200\\\", function () { pm.response.to.have.status(200); });\\n\\npm.test(\\\"TC-CLS-007 source CLOSED and same payout\\\", function () {\\n    const s = pm.response.json();\\n    pm.expect(s.source).to.eql(\\\"CLOSED\\\");\\n    pm.expect(s.payout).to.eql(\\\"500.00\\\");\\n});\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": []
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-TXN-015 Sale dated in a closed period",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-LATE\",\n  \"type\": \"SALE\",\n  \"txn_date\": \"2026-10-31\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"100.00\",\n  \"credits\": [\n    {\n      \"seller_id\": \"S00001\",\n      \"split_pct\": 100\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-TXN-015 status 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"TC-TXN-015 error code PERIOD_CLOSED\", function () {",
+                  "    pm.expect(pm.response.json().error.code).to.eql(\"PERIOD_CLOSED\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-CLS-006 Return dated in a closed period",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"PM-LATE-RET\",\n  \"type\": \"RETURN\",\n  \"txn_date\": \"2026-10-31\",\n  \"store_id\": \"T1000\",\n  \"amount\": \"10.00\",\n  \"original_transaction_id\": \"PM-SALE-2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-CLS-006 status 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"TC-CLS-006 error code PERIOD_CLOSED\", function () {",
+                  "    pm.expect(pm.response.json().error.code).to.eql(\"PERIOD_CLOSED\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TC-QTA-004 Quota change in a closed period",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periods/2026-10/quotas/S00001",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periods",
+                "2026-10",
+                "quotas",
+                "S00001"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"5000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-QTA-004 status 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"TC-QTA-004 error code PERIOD_CLOSED\", function () {",
+                  "    pm.expect(pm.response.json().error.code).to.eql(\"PERIOD_CLOSED\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

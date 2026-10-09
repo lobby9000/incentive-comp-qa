@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="11" skipped="0" tests="107" time="13.848" timestamp="2026-10-08T18:19:44.624657-06:00" hostname="vm"><testcase classname="tests.test_api_conventions" name="test_TC_API_001_health_reports_status_and_version" time="0.060" /><testcase classname="tests.test_api_conventions" name="test_TC_API_002_business_error_uses_standard_body" time="0.050" /><testcase classname="tests.test_api_conventions" name="test_TC_API_003_missing_field_reports_validation_error_location" time="0.044" /><testcase classname="tests.test_api_conventions" name="test_TC_API_004_unknown_body_field_is_rejected" time="0.033" /><testcase classname="tests.test_api_conventions" name="test_TC_API_005_money_is_a_two_decimal_string" time="0.053" /><testcase classname="tests.test_api_conventions" name="test_TC_API_006_unknown_route_and_method_use_standard_body" time="0.031"><failure message="AssertionError: assert ('error' in {'detail': 'Not Found'})&#10; +  where {'detail': 'Not Found'} = json()&#10; +    where json = &lt;Response [404 Not Found]&gt;.json">client = &lt;starlette.testclient.TestClient object at 0x7fdacc684710&gt;
+
+    def test_TC_API_006_unknown_route_and_method_use_standard_body(client):
+        r = client.get("/nope")
+        assert r.status_code == 404
+&gt;       assert "error" in r.json() and r.json()["error"]["code"]
+E       AssertionError: assert ('error' in {'detail': 'Not Found'})
+E        +  where {'detail': 'Not Found'} = json()
+E        +    where json = &lt;Response [404 Not Found]&gt;.json
+
+tests/test_api_conventions.py:49: AssertionError</failure></testcase><testcase classname="tests.test_api_conventions" name="test_TC_API_007_malformed_json_is_a_validation_error" time="0.032" /><testcase classname="tests.test_calculation" name="test_TC_CAL_001_just_below_gate" time="0.059"><failure message="AssertionError: assert ('49999.99', ...rue, '500.00') == ('49999.99', ...False, '0.00')&#10;  &#10;  At index 2 diff: True != False&#10;  Use -v to get more diff">api = &lt;conftest.Api object at 0x7fdacc60f250&gt;
+
+    def test_TC_CAL_001_just_below_gate(api):
+&gt;       _example(api, "TC-CAL-001")
+
+tests/test_calculation.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+api = &lt;conftest.Api object at 0x7fdacc60f250&gt;, tc = 'TC-CAL-001'
+
+    def _example(api, tc):
+        quota, credited, attainment, qualified, payout = EXAMPLES[tc]
+        st = credit_seller(api, "S00001", quota, credited)
+&gt;       assert (st["net_credited"], st["attainment_pct"], st["qualified"], st["payout"]) == \
+            (credited, attainment, qualified, payout)
+E       AssertionError: assert ('49999.99', ...rue, '500.00') == ('49999.99', ...False, '0.00')
+E         
+E         At index 2 diff: True != False
+E         Use -v to get more diff
+
+tests/test_calculation.py:46: AssertionError</failure></testcase><testcase classname="tests.test_calculation" name="test_TC_CAL_002_rounded_display_does_not_open_the_gate" time="0.057"><failure message="AssertionError: assert ('49995.00', ...rue, '499.95') == ('49995.00', ...False, '0.00')&#10;  &#10;  At index 2 diff: True != False&#10;  Use -v to get more diff">api = &lt;conftest.Api object at 0x7fdacb4f6ad0&gt;
+
+    def test_TC_CAL_002_rounded_display_does_not_open_the_gate(api):
+&gt;       _example(api, "TC-CAL-002")
+
+tests/test_calculation.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+api = &lt;conftest.Api object at 0x7fdacb4f6ad0&gt;, tc = 'TC-CAL-002'
+
+    def _example(api, tc):
+        quota, credited, attainment, qualified, payout = EXAMPLES[tc]
+        st = credit_seller(api, "S00001", quota, credited)
+&gt;       assert (st["net_credited"], st["attainment_pct"], st["qualified"], st["payout"]) == \
+            (credited, attainment, qualified, payout)
+E       AssertionError: assert ('49995.00', ...rue, '499.95') == ('49995.00', ...False, '0.00')
+E         
+E         At index 2 diff: True != False
+E         Use -v to get more diff
+
+tests/test_calculation.py:46: AssertionError</failure></testcase><testcase classname="tests.test_calculation" name="test_TC_CAL_003_exactly_50_percent_qualifies" time="0.057" /><testcase classname="tests.test_calculation" name="test_TC_CAL_004_exactly_80_percent" time="0.103" /><testcase classname="tests.test_calculation" name="test_TC_CAL_005_exactly_100_percent" time="0.060" /><testcase classname="tests.test_calculation" name="test_TC_CAL_006_exactly_150_percent" time="0.056" /><testcase classname="tests.test_calculation" name="test_TC_CAL_007_exactly_200_percent" time="0.056" /><testcase classname="tests.test_calculation" name="test_TC_CAL_008_cap_above_200_percent" time="0.055" /><testcase classname="tests.test_calculation" name="test_TC_CAL_009_negative_net_credit" time="0.074" /><testcase classname="tests.test_calculation" name="test_TC_CAL_010_half_cent_tie_rounds_up" time="0.066"><failure message="AssertionError: assert ('5000.50', '...True, '50.00') == ('5000.50', '...True, '50.01')&#10;  &#10;  At index 1 diff: '50.00' != '50.01'&#10;  Use -v to get more diff">api = &lt;conftest.Api object at 0x7fdacc661220&gt;
+
+    def test_TC_CAL_010_half_cent_tie_rounds_up(api):
+&gt;       _example(api, "TC-CAL-010")
+
+tests/test_calculation.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+api = &lt;conftest.Api object at 0x7fdacc661220&gt;, tc = 'TC-CAL-010'
+
+    def _example(api, tc):
+        quota, credited, attainment, qualified, payout = EXAMPLES[tc]
+        st = credit_seller(api, "S00001", quota, credited)
+&gt;       assert (st["net_credited"], st["attainment_pct"], st["qualified"], st["payout"]) == \
+            (credited, attainment, qualified, payout)
+E       AssertionError: assert ('5000.50', '...True, '50.00') == ('5000.50', '...True, '50.01')
+E         
+E         At index 1 diff: '50.00' != '50.01'
+E         Use -v to get more diff
+
+tests/test_calculation.py:46: AssertionError</failure></testcase><testcase classname="tests.test_calculation" name="test_TC_CAL_011_band_limits_between_cents" time="0.058" /><testcase classname="tests.test_calculation" name="test_TC_CAL_012_band_breakdown_at_150_percent" time="0.056" /><testcase classname="tests.test_calculation" name="test_TC_CAL_013_statement_without_quota" time="0.040" /><testcase classname="tests.test_calculation" name="test_TC_CAL_014_attainment_display_rounds_half_up[30000.00-10000.00-33.33]" time="0.074" /><testcase classname="tests.test_calculation" name="test_TC_CAL_014_attainment_display_rounds_half_up[30000.00-20000.00-66.67]" time="0.074" /><testcase classname="tests.test_calculation" name="test_TC_CAL_014_attainment_display_rounds_half_up[100000.00-12345.00-12.35]" time="0.072"><failure message="AssertionError: assert '12.34' == '12.35'&#10;  &#10;  - 12.35&#10;  ?     ^&#10;  + 12.34&#10;  ?     ^">api = &lt;conftest.Api object at 0x7fdacb142e10&gt;, quota = '100000.00'
+credited = '12345.00', shown = '12.35'
+
+    @pytest.mark.parametrize("quota,credited,shown", [
+        ("30000.00", "10000.00", "33.33"),
+        ("30000.00", "20000.00", "66.67"),
+        ("100000.00", "12345.00", "12.35"),
+    ])
+    def test_TC_CAL_014_attainment_display_rounds_half_up(api, quota, credited, shown):
+        st = credit_seller(api, "S00001", quota, credited)
+&gt;       assert st["attainment_pct"] == shown
+E       AssertionError: assert '12.34' == '12.35'
+E         
+E         - 12.35
+E         ?     ^
+E         + 12.34
+E         ?     ^
+
+tests/test_calculation.py:122: AssertionError</failure></testcase><testcase classname="tests.test_calculation" name="test_TC_CAL_015_band_display_tie_rounds_half_up" time="0.060"><failure message="AssertionError: assert '50.00' == '50.01'&#10;  &#10;  - 50.01&#10;  ?     ^&#10;  + 50.00&#10;  ?     ^">api = &lt;conftest.Api object at 0x7fdacb20be30&gt;
+
+    def test_TC_CAL_015_band_display_tie_rounds_half_up(api):
+        st = credit_seller(api, "S00001", "10000.00", "5000.50")
+        band_a = next(b for b in st["bands"] if b["band"] == "A")
+&gt;       assert band_a["commission"] == "50.01"
+E       AssertionError: assert '50.00' == '50.01'
+E         
+E         - 50.01
+E         ?     ^
+E         + 50.00
+E         ?     ^
+
+tests/test_calculation.py:128: AssertionError</failure></testcase><testcase classname="tests.test_calculation" name="test_TC_CAL_016_live_statement_reflects_new_sale" time="0.084" /><testcase classname="tests.test_close" name="test_TC_CLS_001_close_stores_one_row_per_quota" time="0.093" /><testcase classname="tests.test_close" name="test_TC_CLS_002_close_twice_is_rejected" time="0.090" /><testcase classname="tests.test_close" name="test_TC_CLS_003_periods_close_in_order" time="0.100" /><testcase classname="tests.test_close" name="test_TC_CLS_004_credited_seller_without_quota_blocks_close" time="0.120" /><testcase classname="tests.test_close" name="test_TC_CLS_005_quota_without_credits_gets_zero_row" time="0.115" /><testcase classname="tests.test_close" name="test_TC_CLS_006_closed_period_rejects_sales_and_returns" time="0.124" /><testcase classname="tests.test_close" name="test_TC_CLS_007_statement_after_close_uses_stored_values" time="0.113" /><testcase classname="tests.test_close" name="test_TC_CLS_008_payouts_of_open_period" time="0.043" /><testcase classname="tests.test_close" name="test_TC_CLS_009_unknown_period" time="0.039" /><testcase classname="tests.test_import" name="test_TC_IMP_001_batch_with_same_batch_return" time="0.059"><failure message="AttributeError: 'list' object has no attribute 'original_transaction_id'">api = &lt;conftest.Api object at 0x7fdacabda6f0&gt;
+
+    def test_TC_IMP_001_batch_with_same_batch_return(api):
+        api.seller("S00001")
+&gt;       r = post_import(api, [sale_row("I-1", "300.00"), return_row("I-2", "I-1", "100.00")])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_import.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_import.py:17: in post_import
+    return api.c.post("/imports/transactions", json={"transactions": rows})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/starlette/testclient.py:556: in post
+    return super().post(
+/usr/local/lib/python3.13/dist-packages/httpx2/_client.py:1204: in post
+    return self.request(
+/usr/local/lib/python3.13/dist-packages/starlette/testclient.py:455: in request
+    return super().request(
+/usr/local/lib/python3.13/dist-packages/httpx2/_client.py:797: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/httpx2/_client.py:980: in send
+    response = self._send_handling_auth(
+/usr/local/lib/python3.13/dist-packages/httpx2/_client.py:1008: in _send_handling_auth
+    response = self._send_handling_redirects(
+/usr/local/lib/python3.13/dist-packages/httpx2/_client.py:1043: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/httpx2/_client.py:1076: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/starlette/testclient.py:354: in handle_request
+    raise exc
+/usr/local/lib/python3.13/dist-packages/starlette/testclient.py:351: in handle_request
+    portal.call(self.app, scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/concurrent/futures/_base.py:460: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/concurrent/futures/_base.py:402: in __get_result
+    raise self._exception
+/usr/local/lib/python3.13/dist-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/fastapi/applications.py:1216: in __call__
+    await super().__call__(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/applications.py:96: in __call__
+    await self.middleware_stack(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+/usr/local/lib/python3.13/dist-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+/usr/local/lib/python3.13/dist-packages/fastapi/telemetry/_asgi.py:151: in __call__
+    await self.app(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+/usr/local/lib/python3.13/dist-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+/usr/local/lib/python3.13/dist-packages/fastapi/middleware/asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/routing.py:670: in __call__
+    await self.middleware_stack(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/fastapi/routing.py:2786: in app
+    await route.handle(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/fastapi/routing.py:1310: in handle
+    await super().handle(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/routing.py:280: in handle
+    await self.app(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/fastapi/routing.py:165: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+/usr/local/lib/python3.13/dist-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+/usr/local/lib/python3.13/dist-packages/fastapi/routing.py:151: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/fastapi/routing.py:727: in app
+    raw_response = await run_endpoint_function(
+/usr/local/lib/python3.13/dist-packages/fastapi/routing.py:362: in run_endpoint_function
+    return await run_in_threadpool(
+/usr/local/lib/python3.13/dist-packages/starlette/concurrency.py:34: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/anyio/to_thread.py:65: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+/usr/local/lib/python3.13/dist-packages/anyio/_backends/_asyncio.py:2706: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/anyio/_backends/_asyncio.py:1100: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/fastapi/telemetry/_api.py:244: in _run_sync_endpoint
+    return function(**arguments)
+           ^^^^^^^^^^^^^^^^^^^^^
+app/main.py:95: in import_transactions
+    return service.import_transactions(session, body.transactions)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/service.py:198: in import_transactions
+    txn, credits = build_transaction(session, row, pending)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/service.py:159: in build_transaction
+    returned += sum(t.amount_cents for t in pending.values()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+.0 = &lt;dict_valueiterator object at 0x7fdacac64310&gt;
+
+    returned += sum(t.amount_cents for t in pending.values()
+&gt;                   if t.original_transaction_id == original.transaction_id)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'list' object has no attribute 'original_transaction_id'
+
+app/service.py:160: AttributeError</failure></testcase><testcase classname="tests.test_import" name="test_TC_IMP_002_business_error_rejects_whole_batch" time="0.067" /><testcase classname="tests.test_import" name="test_TC_IMP_003_schema_error_reports_row_and_stores_nothing" time="0.058" /><testcase classname="tests.test_import" name="test_TC_IMP_004_duplicate_id_inside_batch" time="0.063" /><testcase classname="tests.test_import" name="test_TC_IMP_005_batch_size_boundaries" time="6.476" /><testcase classname="tests.test_import" name="test_TC_IMP_006_returns_in_batch_cannot_exceed_sale" time="0.046"><failure message="AttributeError: 'list' object has no attribute 'original_transaction_id'">api = &lt;conftest.Api object at 0x7fdacaf7fb30&gt;
+
+    def test_TC_IMP_006_returns_in_batch_cannot_exceed_sale(api):
+        api.seller("S00001")
+&gt;       r = post_import(api, [sale_row("I-1", "100.00"), return_row("I-2", "I-1", "60.00"),
+                              return_row("I-3", "I-1", "41.00")])
+
+tests/test_import.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_import.py:17: in post_import
+    return api.c.post("/imports/transactions", json={"transactions": rows})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/starlette/testclient.py:556: in post
+    return super().post(
+/usr/local/lib/python3.13/dist-packages/httpx2/_client.py:1204: in post
+    return self.request(
+/usr/local/lib/python3.13/dist-packages/starlette/testclient.py:455: in request
+    return super().request(
+/usr/local/lib/python3.13/dist-packages/httpx2/_client.py:797: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/httpx2/_client.py:980: in send
+    response = self._send_handling_auth(
+/usr/local/lib/python3.13/dist-packages/httpx2/_client.py:1008: in _send_handling_auth
+    response = self._send_handling_redirects(
+/usr/local/lib/python3.13/dist-packages/httpx2/_client.py:1043: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/httpx2/_client.py:1076: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/starlette/testclient.py:354: in handle_request
+    raise exc
+/usr/local/lib/python3.13/dist-packages/starlette/testclient.py:351: in handle_request
+    portal.call(self.app, scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/concurrent/futures/_base.py:460: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/concurrent/futures/_base.py:402: in __get_result
+    raise self._exception
+/usr/local/lib/python3.13/dist-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/fastapi/applications.py:1216: in __call__
+    await super().__call__(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/applications.py:96: in __call__
+    await self.middleware_stack(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+/usr/local/lib/python3.13/dist-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+/usr/local/lib/python3.13/dist-packages/fastapi/telemetry/_asgi.py:151: in __call__
+    await self.app(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+/usr/local/lib/python3.13/dist-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+/usr/local/lib/python3.13/dist-packages/fastapi/middleware/asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/routing.py:670: in __call__
+    await self.middleware_stack(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/fastapi/routing.py:2786: in app
+    await route.handle(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/fastapi/routing.py:1310: in handle
+    await super().handle(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/routing.py:280: in handle
+    await self.app(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/fastapi/routing.py:165: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+/usr/local/lib/python3.13/dist-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+/usr/local/lib/python3.13/dist-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+/usr/local/lib/python3.13/dist-packages/fastapi/routing.py:151: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/fastapi/routing.py:727: in app
+    raw_response = await run_endpoint_function(
+/usr/local/lib/python3.13/dist-packages/fastapi/routing.py:362: in run_endpoint_function
+    return await run_in_threadpool(
+/usr/local/lib/python3.13/dist-packages/starlette/concurrency.py:34: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/anyio/to_thread.py:65: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+/usr/local/lib/python3.13/dist-packages/anyio/_backends/_asyncio.py:2706: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/anyio/_backends/_asyncio.py:1100: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/fastapi/telemetry/_api.py:244: in _run_sync_endpoint
+    return function(**arguments)
+           ^^^^^^^^^^^^^^^^^^^^^
+app/main.py:95: in import_transactions
+    return service.import_transactions(session, body.transactions)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/service.py:198: in import_transactions
+    txn, credits = build_transaction(session, row, pending)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app/service.py:159: in build_transaction
+    returned += sum(t.amount_cents for t in pending.values()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+.0 = &lt;dict_valueiterator object at 0x7fdac31fe0c0&gt;
+
+    returned += sum(t.amount_cents for t in pending.values()
+&gt;                   if t.original_transaction_id == original.transaction_id)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'list' object has no attribute 'original_transaction_id'
+
+app/service.py:160: AttributeError</failure></testcase><testcase classname="tests.test_returns" name="test_TC_RET_001_full_return_mirrors_split" time="0.062" /><testcase classname="tests.test_returns" name="test_TC_RET_002_day_30_is_clawed_back" time="0.056"><failure message="AssertionError: assert {} == {'S00001': '-...2': '-300.00'}&#10;  &#10;  Right contains 2 more items:&#10;  {'S00001': '-700.00', 'S00002': '-300.00'}&#10;  Use -v to get more diff">api = &lt;conftest.Api object at 0x7fdac32b50d0&gt;, split_sale = 'SALE-BASE'
+
+    def test_TC_RET_002_day_30_is_clawed_back(api, split_sale):
+        r = api.ret("2026-11-04", "1000.00", split_sale)
+&gt;       assert credits_of(r) == {"S00001": "-700.00", "S00002": "-300.00"}
+E       AssertionError: assert {} == {'S00001': '-...2': '-300.00'}
+E         
+E         Right contains 2 more items:
+E         {'S00001': '-700.00', 'S00002': '-300.00'}
+E         Use -v to get more diff
+
+tests/test_returns.py:28: AssertionError</failure></testcase><testcase classname="tests.test_returns" name="test_TC_RET_003_day_31_has_no_clawback" time="0.054" /><testcase classname="tests.test_returns" name="test_TC_RET_004_odd_cent_partial_return" time="0.072"><failure message="AssertionError: assert {'S00001': '-...02': '-30.01'} == {'S00001': '-...02': '-30.00'}&#10;  &#10;  Differing items:&#10;  {'S00001': '-70.00'} != {'S00001': '-70.01'}&#10;  {'S00002': '-30.01'} != {'S00002': '-30.00'}&#10;  Use -v to get more diff">api = &lt;conftest.Api object at 0x7fdac32b5d30&gt;, split_sale = 'SALE-BASE'
+
+    def test_TC_RET_004_odd_cent_partial_return(api, split_sale):
+        r = api.ret("2026-10-20", "100.01", split_sale)
+&gt;       assert credits_of(r) == {"S00001": "-70.01", "S00002": "-30.00"}
+E       AssertionError: assert {'S00001': '-...02': '-30.01'} == {'S00001': '-...02': '-30.00'}
+E         
+E         Differing items:
+E         {'S00001': '-70.00'} != {'S00001': '-70.01'}
+E         {'S00002': '-30.01'} != {'S00002': '-30.00'}
+E         Use -v to get more diff
+
+tests/test_returns.py:38: AssertionError</failure></testcase><testcase classname="tests.test_returns" name="test_TC_RET_005_cumulative_returns_up_to_sale_amount" time="0.073" /><testcase classname="tests.test_returns" name="test_TC_RET_006_return_before_sale" time="0.057" /><testcase classname="tests.test_returns" name="test_TC_RET_007_unknown_original" time="0.039" /><testcase classname="tests.test_returns" name="test_TC_RET_008_return_of_a_return" time="0.072" /><testcase classname="tests.test_returns" name="test_TC_RET_009_return_with_its_own_credits" time="0.063" /><testcase classname="tests.test_returns" name="test_TC_RET_010_return_posts_to_return_period" time="0.083" /><testcase classname="tests.test_returns" name="test_TC_RET_011_clawback_applies_to_inactive_seller" time="0.083" /><testcase classname="tests.test_returns" name="test_TC_RET_012_same_day_return_is_clawed_back" time="0.191" /><testcase classname="tests.test_sellers_quotas" name="test_TC_SEL_001_create_seller" time="0.043" /><testcase classname="tests.test_sellers_quotas" name="test_TC_SEL_002_duplicate_seller_is_rejected" time="0.053" /><testcase classname="tests.test_sellers_quotas" name="test_TC_SEL_003_unknown_store_is_rejected" time="0.043" /><testcase classname="tests.test_sellers_quotas" name="test_TC_SEL_004_seller_id_format_invalid[S1234]" time="0.038" /><testcase classname="tests.test_sellers_quotas" name="test_TC_SEL_004_seller_id_format_invalid[S123456]" time="0.038" /><testcase classname="tests.test_sellers_quotas" name="test_TC_SEL_004_seller_id_format_invalid[s12345]" time="0.040" /><testcase classname="tests.test_sellers_quotas" name="test_TC_SEL_004_seller_id_format_invalid[X12345]" time="0.045" /><testcase classname="tests.test_sellers_quotas" name="test_TC_SEL_004_seller_id_format_invalid[S1234A]" time="0.038" /><testcase classname="tests.test_sellers_quotas" name="test_TC_SEL_004_seller_id_lowest_valid" time="0.044" /><testcase classname="tests.test_sellers_quotas" name="test_TC_SEL_005_name_boundaries" time="0.046" /><testcase classname="tests.test_sellers_quotas" name="test_TC_SEL_006_unknown_seller" time="0.045" /><testcase classname="tests.test_sellers_quotas" name="test_TC_SEL_007_deactivate_and_invalid_status" time="0.050" /><testcase classname="tests.test_sellers_quotas" name="test_TC_QTA_001_create_then_replace" time="0.062" /><testcase classname="tests.test_sellers_quotas" name="test_TC_QTA_002_quota_amount_boundaries[0-False]" time="0.046" /><testcase classname="tests.test_sellers_quotas" name="test_TC_QTA_002_quota_amount_boundaries[0.00-False]" time="0.046" /><testcase classname="tests.test_sellers_quotas" name="test_TC_QTA_002_quota_amount_boundaries[0.01-True]" time="0.048" /><testcase classname="tests.test_sellers_quotas" name="test_TC_QTA_002_quota_amount_boundaries[10000000.00-True]" time="0.049" /><testcase classname="tests.test_sellers_quotas" name="test_TC_QTA_002_quota_amount_boundaries[10000000.01-False]" time="0.045" /><testcase classname="tests.test_sellers_quotas" name="test_TC_QTA_002_quota_amount_boundaries[-5-False]" time="0.043" /><testcase classname="tests.test_sellers_quotas" name="test_TC_QTA_002_quota_amount_boundaries[100.005-False]" time="0.043" /><testcase classname="tests.test_sellers_quotas" name="test_TC_QTA_003_unknown_period_or_seller" time="0.055" /><testcase classname="tests.test_sellers_quotas" name="test_TC_QTA_004_quota_change_in_closed_period" time="0.058" /><testcase classname="tests.test_transactions" name="test_TC_TXN_001_single_seller_sale" time="0.051" /><testcase classname="tests.test_transactions" name="test_TC_TXN_002_split_70_30" time="0.063" /><testcase classname="tests.test_transactions" name="test_TC_TXN_003_odd_cent_split_remainder_to_first_seller" time="0.059" /><testcase classname="tests.test_transactions" name="test_TC_TXN_004_one_cent_split_stores_zero_line" time="0.055" /><testcase classname="tests.test_transactions" name="test_TC_TXN_005_splits_must_add_up_to_100[splits0]" time="0.045" /><testcase classname="tests.test_transactions" name="test_TC_TXN_005_splits_must_add_up_to_100[splits1]" time="0.060" /><testcase classname="tests.test_transactions" name="test_TC_TXN_005_splits_must_add_up_to_100[splits2]" time="0.056" /><testcase classname="tests.test_transactions" name="test_TC_TXN_006_zero_or_three_credit_lines" time="0.087" /><testcase classname="tests.test_transactions" name="test_TC_TXN_007_same_seller_twice" time="0.047" /><testcase classname="tests.test_transactions" name="test_TC_TXN_008_unknown_seller" time="0.037" /><testcase classname="tests.test_transactions" name="test_TC_TXN_009_inactive_seller_cannot_receive_credit" time="0.059" /><testcase classname="tests.test_transactions" name="test_TC_TXN_010_primary_seller_store_rule" time="0.057" /><testcase classname="tests.test_transactions" name="test_TC_TXN_011_amount_boundaries[0.00-False]" time="0.038" /><testcase classname="tests.test_transactions" name="test_TC_TXN_011_amount_boundaries[0.01-True]" time="0.082" /><testcase classname="tests.test_transactions" name="test_TC_TXN_011_amount_boundaries[1000000.00-True]" time="0.054" /><testcase classname="tests.test_transactions" name="test_TC_TXN_011_amount_boundaries[1000000.01-False]" time="0.045" /><testcase classname="tests.test_transactions" name="test_TC_TXN_011_amount_boundaries[-1-False]" time="0.049" /><testcase classname="tests.test_transactions" name="test_TC_TXN_011_amount_boundaries[10.005-False]" time="0.048" /><testcase classname="tests.test_transactions" name="test_TC_TXN_011_amount_boundaries[1500.50-True]" time="0.061" /><testcase classname="tests.test_transactions" name="test_TC_TXN_011_amount_boundaries[1000.0-True]" time="0.061" /><testcase classname="tests.test_transactions" name="test_TC_TXN_012_duplicate_transaction_is_not_counted_twice" time="0.071" /><testcase classname="tests.test_transactions" name="test_TC_TXN_013_transaction_id_format[AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-True]" time="0.083" /><testcase classname="tests.test_transactions" name="test_TC_TXN_013_transaction_id_format[AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-False]" time="0.062" /><testcase classname="tests.test_transactions" name="test_TC_TXN_013_transaction_id_format[HAS SPACE-False]" time="0.048" /><testcase classname="tests.test_transactions" name="test_TC_TXN_013_transaction_id_format[-False]" time="0.052"><failure message="AssertionError: {&quot;transaction_id&quot;:&quot;SALE-00001&quot;,&quot;type&quot;:&quot;SALE&quot;,&quot;txn_date&quot;:&quot;2026-10-15&quot;,&quot;store_id&quot;:&quot;T1000&quot;,&quot;amount&quot;:&quot;10.00&quot;,&quot;original_transaction_id&quot;:null,&quot;period_id&quot;:&quot;2026-10&quot;,&quot;credits&quot;:[{&quot;seller_id&quot;:&quot;S00001&quot;,&quot;split_pct&quot;:100,&quot;credit&quot;:&quot;10.00&quot;}]}&#10;assert 201 == 422&#10; +  where 201 = &lt;Response [201 Created]&gt;.status_code">api = &lt;conftest.Api object at 0x7fdaca1bee70&gt;, tid = '', valid = False
+
+    @pytest.mark.parametrize("tid,valid", [("A" * 32, True), ("A" * 33, False), ("HAS SPACE", False), ("", False)])
+    def test_TC_TXN_013_transaction_id_format(api, tid, valid):
+        api.seller("S00001")
+        r = api.sale("2026-10-15", "10.00", [("S00001", 100)], tid=tid, expect=None)
+        if valid:
+            assert r.status_code == 201, r.text
+        else:
+&gt;           assert r.status_code == 422, r.text
+E           AssertionError: {"transaction_id":"SALE-00001","type":"SALE","txn_date":"2026-10-15","store_id":"T1000","amount":"10.00","original_transaction_id":null,"period_id":"2026-10","credits":[{"seller_id":"S00001","split_pct":100,"credit":"10.00"}]}
+E           assert 201 == 422
+E            +  where 201 = &lt;Response [201 Created]&gt;.status_code
+
+tests/test_transactions.py:115: AssertionError</failure></testcase><testcase classname="tests.test_transactions" name="test_TC_TXN_014_plan_date_boundaries[2026-09-30-422-OUT_OF_PLAN]" time="0.044" /><testcase classname="tests.test_transactions" name="test_TC_TXN_014_plan_date_boundaries[2026-10-01-201-None]" time="0.048" /><testcase classname="tests.test_transactions" name="test_TC_TXN_014_plan_date_boundaries[2026-12-31-201-None]" time="0.047" /><testcase classname="tests.test_transactions" name="test_TC_TXN_014_plan_date_boundaries[2027-01-01-422-OUT_OF_PLAN]" time="0.042" /><testcase classname="tests.test_transactions" name="test_TC_TXN_015_sale_in_closed_period" time="0.069" /><testcase classname="tests.test_transactions" name="test_TC_TXN_016_sale_with_original_transaction" time="0.054" /><testcase classname="tests.test_transactions" name="test_TC_TXN_017_unknown_store" time="0.041" /><testcase classname="tests.test_transactions" name="test_TC_TXN_018_read_transaction_and_unknown" time="0.054" /></testsuite></testsuites>

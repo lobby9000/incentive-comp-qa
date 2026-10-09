@@ -1,0 +1,141 @@
+Summary,Issue Type,Priority,Labels,Labels,Labels,Component/s,Affects Version/s,Environment,Description
+[BUG-001] Import returns HTTP 500 when a batch contains a return after a sale,Bug,Highest,commission-engine,severity-s1,req-imp-01,Import,0.1.0-rc1,"Build 0.1.0-rc1 (tag v0.1.0-rc1), Python 3.13, FastAPI 0.143, SQLModel 0.0.48, Ubuntu 24.04, SQLite and PostgreSQL 16","Bug file in the repo: bugs/BUG-001.md
+Requirement: REQ-IMP-01
+Found by: TC-IMP-001, TC-IMP-006, full-volume load (import mode)
+Severity: S1 Critical
+
+*Steps to reproduce*
+# Create seller {{S00001}} in store {{T1000}}.
+# {{POST /imports/transactions}} with a SALE {{I-1}} of 300.00 and a RETURN {{I-2}} of 100.00 that references {{I-1}}.
+
+*Expected result*
+201 with {{{""imported"": 2, ""sales"": 1, ""returns"": 1, ""credits"": 2}}}.
+
+*Actual result*
+500 Internal Server Error with a plain-text body. Server log: {{AttributeError: 'list' object has no attribute 'original_transaction_id'}} in {{app/service.py}}, {{build_transaction}}.
+
+*Impact*
+Any realistic batch fails, because returns are about 5.5% of the rows. The full dataset could not be loaded through the import endpoint, which blocked the parallel run. Workaround used for rc1: load with one {{POST /transactions}} per row (25,259 calls)."
+"[BUG-002] Gate is evaluated on the rounded attainment, so 49.995% to 49.99999% qualifies",Bug,High,commission-engine,severity-s2,req-cal-03,Calculation,0.1.0-rc1,"Build 0.1.0-rc1 (tag v0.1.0-rc1), Python 3.13, FastAPI 0.143, SQLModel 0.0.48, Ubuntu 24.04","Bug file in the repo: bugs/BUG-002.md
+Requirement: REQ-CAL-03
+Found by: TC-CAL-001, TC-CAL-002, TC-REC-001 (seller S19002)
+Severity: S2 Major
+
+*Steps to reproduce*
+# Create seller {{S00001}} and a 2026-10 quota of 100,000.00.
+# Post a SALE of 49,995.00 dated 2026-10-01.
+# {{GET /periods/2026-10/sellers/S00001/statement}}.
+
+*Expected result*
+{{attainment_pct}} ""50.00"" (display only), {{qualified}} false, {{payout}} ""0.00"". REQ-CAL-03 evaluates the gate on the exact value (49.995%).
+
+*Actual result*
+{{qualified}} true and {{payout}} ""499.95"". The same happens with 49,999.99, which pays 500.00.
+
+*Impact*
+Any seller between 49.995% and 50% is paid as if they passed the gate. In the dataset: 1 statement (boundary seller S19002) overpaid by 499.95."
+[BUG-003] Payout half-cent ties round to even instead of half-up,Bug,High,commission-engine,severity-s2,req-cal-06,Calculation,0.1.0-rc1,"Build 0.1.0-rc1 (tag v0.1.0-rc1), Python 3.13, FastAPI 0.143, SQLModel 0.0.48, Ubuntu 24.04","Bug file in the repo: bugs/BUG-003.md
+Requirement: REQ-CAL-06
+Found by: TC-CAL-010, TC-REC-001
+Severity: S2 Major
+
+*Steps to reproduce*
+# Create seller {{S00001}} and a 2026-10 quota of 10,000.00.
+# Post SALES totalling 5,000.50.
+# Get the statement.
+
+*Expected result*
+{{payout}} ""50.01"" (50.005 rounds half-up).
+
+*Actual result*
+{{payout}} ""50.00"".
+
+*Impact*
+One cent under on every payout whose exact value ends in 5 at the third decimal. In the dataset: 5 statements underpaid by 0.01, four of them ordinary sellers from the random data, not the crafted boundary seller."
+[BUG-004] Returns made exactly 30 days after the sale are not clawed back,Bug,High,commission-engine,severity-s2,req-ret-04,Returns,0.1.0-rc1,"Build 0.1.0-rc1 (tag v0.1.0-rc1), Python 3.13, FastAPI 0.143, SQLModel 0.0.48, Ubuntu 24.04","Bug file in the repo: bugs/BUG-004.md
+Requirement: REQ-RET-04
+Found by: TC-RET-002, TC-REC-001
+Severity: S2 Major
+
+*Steps to reproduce*
+# Create sellers {{S00001}} and {{S00002}} in {{T1000}}.
+# Post a SALE of 10,000.00 split 70/30 dated 2026-10-05.
+# Post a RETURN of 1,000.00 for that sale dated 2026-11-04 (30 days later).
+
+*Expected result*
+Credit lines -700.00 for S00001 and -300.00 for S00002 (the window is 30 days or less).
+
+*Actual result*
+201 with no credit lines, as if the return were outside the window.
+
+*Impact*
+The largest money defect of rc1. In the dataset: 30 returns on day 30, 31 statements with a wrong credited amount and 26 payouts overpaid, 6,066.83 MXN in total."
+[BUG-005] Odd-cent clawback on a split return moves one cent between the sellers,Bug,Medium,commission-engine,severity-s2,req-ret-04,Returns,0.1.0-rc1,"Build 0.1.0-rc1 (tag v0.1.0-rc1), Python 3.13, FastAPI 0.143, SQLModel 0.0.48, Ubuntu 24.04","Bug file in the repo: bugs/BUG-005.md
+Requirement: REQ-RET-04
+Found by: TC-RET-004, TC-REC-001
+Severity: S2 Major
+
+*Steps to reproduce*
+# Post a SALE of 10,000.00 split 70/30 (S00001, S00002).
+# Post a RETURN of 100.01 for it inside the window.
+
+*Expected result*
+-70.01 for S00001 and -30.00 for S00002 (magnitudes use the sale rule, then are negated).
+
+*Actual result*
+-70.00 for S00001 and -30.01 for S00002.
+
+*Impact*
+The return still nets to -100.01, but each seller's statement is off by one cent. In the dataset: 171 seller statements with a credited amount off by 0.01, one of which also changes the payout by 0.01."
+[BUG-006] Displayed attainment and band commissions use banker's rounding on ties,Bug,Medium,commission-engine,severity-s3,req-cal-06,Statements,0.1.0-rc1,"Build 0.1.0-rc1 (tag v0.1.0-rc1), Python 3.13, FastAPI 0.143, SQLModel 0.0.48, Ubuntu 24.04","Bug file in the repo: bugs/BUG-006.md
+Requirement: REQ-CAL-06, REQ-STM-03
+Found by: TC-CAL-010, TC-CAL-014, TC-CAL-015
+Severity: S3 Minor
+
+*Steps to reproduce*
+# Quota 100,000.00, credited 12,345.00: get the statement (attainment 12.345%).
+# Quota 10,000.00, credited 5,000.50: get the statement (attainment 50.005%, band A commission 50.005).
+
+*Expected result*
+{{attainment_pct}} ""12.35"" and ""50.01"". Band A {{commission}} ""50.01"".
+
+*Actual result*
+""12.34"", ""50.00"" and ""50.00"".
+
+*Impact*
+Display only: the statement a seller reads disagrees with the plan's rounding rule on ties. Tracked apart from BUG-003 because it does not change the money, although the cause is the same."
+"[BUG-007] Framework errors (unknown route, wrong method, unhandled 500) bypass the error envelope",Bug,Low,commission-engine,severity-s3,req-api-01,API,0.1.0-rc1,"Build 0.1.0-rc1 (tag v0.1.0-rc1), Python 3.13, FastAPI 0.143, SQLModel 0.0.48, Ubuntu 24.04","Bug file in the repo: bugs/BUG-007.md
+Requirement: REQ-API-01
+Found by: TC-API-006, Newman collection-level envelope check
+Severity: S3 Minor
+
+*Steps to reproduce*
+# {{GET /nope}}.
+# {{DELETE /health}}.
+
+*Expected result*
+404 and 405 with {{{""error"": {""code"", ""message"", ""details""}}}}.
+
+*Actual result*
+{{{""detail"": ""Not Found""}}} and {{{""detail"": ""Method Not Allowed""}}}. Unhandled exceptions return a plain-text {{Internal Server Error}} body, which Newman's envelope check also flagged.
+
+*Impact*
+Clients that parse {{error.code}} break on these responses."
+[BUG-008] On PostgreSQL every sale fails with HTTP 500 (credit rows inserted before their transaction),Bug,Highest,commission-engine,severity-s1,req-crd-02,Persistence,0.1.0-rc1,"Build 0.1.0-rc1 (tag v0.1.0-rc1), Python 3.13, FastAPI 0.143, SQLModel 0.0.48, Ubuntu 24.04, PostgreSQL 16 only (passes on SQLite)","Bug file in the repo: bugs/BUG-008.md
+Requirement: REQ-CRD-02 (all transaction flows)
+Found by: 52 of 107 functional results on PostgreSQL, Newman run on PostgreSQL
+Severity: S1 Critical
+
+*Steps to reproduce*
+# Run the API with {{DATABASE_URL=postgresql+psycopg://...}}.
+# Create seller {{S00001}}.
+# Post any SALE with credits.
+
+*Expected result*
+201 with the credit lines.
+
+*Actual result*
+500. Log: {{psycopg.errors.ForeignKeyViolation: insert or update on table ""credit"" violates foreign key constraint ""credit_transaction_id_fkey""}}.
+
+*Impact*
+The production database rejects every sale and return. The functional suite passed on SQLite because SQLite does not enforce foreign keys unless {{PRAGMA foreign_keys=ON}} is set, so the defect was invisible there."

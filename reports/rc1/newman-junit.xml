@@ -1,0 +1,854 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Commission Engine QA" tests="61" time="0.586">
+  <testsuite name="00 Smoke / TC-API-001 Health answers with status and version" id="da8e4ebf-005d-4ec1-bb69-f840d42704dd" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="0" errors="0" time="0.023">
+    <testcase name="Response time under 2 s" time="0.023" classname="00SmokeTcApi001HealthAnswersWithStatusAndVersion"/>
+    <testcase name="TC-API-001 status 200" time="0.023" classname="00SmokeTcApi001HealthAnswersWithStatusAndVersion"/>
+    <testcase name="TC-API-001 status ok and version" time="0.023" classname="00SmokeTcApi001HealthAnswersWithStatusAndVersion"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-SEL-001 Create a seller" id="ddddf728-1d45-4377-b2fa-629f55d80cc6" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="0" errors="0" time="0.033">
+    <testcase name="Response time under 2 s" time="0.033" classname="01SellersAndQuotasTcSel001CreateASeller"/>
+    <testcase name="TC-SEL-001 status 201" time="0.033" classname="01SellersAndQuotasTcSel001CreateASeller"/>
+    <testcase name="TC-SEL-001 body echoes input and is ACTIVE" time="0.033" classname="01SellersAndQuotasTcSel001CreateASeller"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / Setup: seller S00002 in T1000" id="41054d02-8854-4681-9037-efa3cc7c93f6" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Response time under 2 s" time="0.008" classname="01SellersAndQuotasSetupSellerS00002InT1000"/>
+    <testcase name="Setup status 201" time="0.008" classname="01SellersAndQuotasSetupSellerS00002InT1000"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-SEL-002 Duplicate seller is rejected" id="dfc9a556-24cf-43b5-b1b3-0076954e3ec4" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="0" errors="0" time="0.008">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.008" classname="01SellersAndQuotasTcSel002DuplicateSellerIsRejected"/>
+    <testcase name="Response time under 2 s" time="0.008" classname="01SellersAndQuotasTcSel002DuplicateSellerIsRejected"/>
+    <testcase name="TC-SEL-002 status 409" time="0.008" classname="01SellersAndQuotasTcSel002DuplicateSellerIsRejected"/>
+    <testcase name="TC-SEL-002 error code DUPLICATE_SELLER" time="0.008" classname="01SellersAndQuotasTcSel002DuplicateSellerIsRejected"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-API-002 Unknown seller uses the standard error body" id="d8c7b321-a8e3-403b-bbde-cfeba54c030e" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.005">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.005" classname="01SellersAndQuotasTcApi002UnknownSellerUsesTheStandardErrorBody"/>
+    <testcase name="Response time under 2 s" time="0.005" classname="01SellersAndQuotasTcApi002UnknownSellerUsesTheStandardErrorBody"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-API-003 Missing field reports VALIDATION_ERROR" id="013754c2-1aac-4034-9a61-3e31d74359aa" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="0" errors="0" time="0.003">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.003" classname="01SellersAndQuotasTcApi003MissingFieldReportsValidationError"/>
+    <testcase name="Response time under 2 s" time="0.003" classname="01SellersAndQuotasTcApi003MissingFieldReportsValidationError"/>
+    <testcase name="TC-API-003 status 422" time="0.003" classname="01SellersAndQuotasTcApi003MissingFieldReportsValidationError"/>
+    <testcase name="TC-API-003 error code VALIDATION_ERROR" time="0.003" classname="01SellersAndQuotasTcApi003MissingFieldReportsValidationError"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-QTA-001 Create a quota" id="0c803660-9144-45a8-bd71-a6911b206100" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.012">
+    <testcase name="Response time under 2 s" time="0.012" classname="01SellersAndQuotasTcQta001CreateAQuota"/>
+    <testcase name="TC-QTA-001 status 201" time="0.012" classname="01SellersAndQuotasTcQta001CreateAQuota"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-QTA-001 Replace the quota" id="366885d1-153e-430c-a66a-fb2a9a81e611" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="01SellersAndQuotasTcQta001ReplaceTheQuota"/>
+    <testcase name="TC-QTA-001 status 200" time="0.009" classname="01SellersAndQuotasTcQta001ReplaceTheQuota"/>
+    <testcase name="TC-QTA-001 amount replaced" time="0.009" classname="01SellersAndQuotasTcQta001ReplaceTheQuota"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / Setup: quota 2026-10 S00002" id="88e34246-f861-4c0a-bb32-f8c72bccf4c0" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.010">
+    <testcase name="Response time under 2 s" time="0.010" classname="01SellersAndQuotasSetupQuota202610S00002"/>
+    <testcase name="Setup status 201" time="0.010" classname="01SellersAndQuotasSetupQuota202610S00002"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / Setup: quota 2026-11 S00001" id="cf576ce7-5fb3-4e55-9333-093f4f01b14f" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="01SellersAndQuotasSetupQuota202611S00001"/>
+    <testcase name="Setup status 201" time="0.009" classname="01SellersAndQuotasSetupQuota202611S00001"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / Setup: quota 2026-11 S00002" id="32b1b0f1-8980-416b-ab61-0b95a1e26505" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Response time under 2 s" time="0.008" classname="01SellersAndQuotasSetupQuota202611S00002"/>
+    <testcase name="Setup status 201" time="0.008" classname="01SellersAndQuotasSetupQuota202611S00002"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / Setup: seller S00003 to deactivate" id="e87d9478-ceb1-4113-ae67-dfbde2926ee4" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Response time under 2 s" time="0.008" classname="01SellersAndQuotasSetupSellerS00003ToDeactivate"/>
+    <testcase name="Setup status 201" time="0.008" classname="01SellersAndQuotasSetupSellerS00003ToDeactivate"/>
+  </testsuite>
+  <testsuite name="01 Sellers and quotas / TC-SEL-007 Deactivate a seller" id="86dbf93f-8401-4cb0-a684-aa07ea832b09" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="0" errors="0" time="0.008">
+    <testcase name="Response time under 2 s" time="0.008" classname="01SellersAndQuotasTcSel007DeactivateASeller"/>
+    <testcase name="TC-SEL-007 status 200" time="0.008" classname="01SellersAndQuotasTcSel007DeactivateASeller"/>
+    <testcase name="TC-SEL-007 status is INACTIVE" time="0.008" classname="01SellersAndQuotasTcSel007DeactivateASeller"/>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-001 Single-seller sale credits the full amount" id="3607c485-a9ee-480d-8214-19c36e4dd1ef" timestamp="2026-10-09T00:29:19.910Z" tests="5" failures="4" errors="0" time="0.012">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.012" classname="02SalesAndCreditingTcTxn001SingleSellerSaleCreditsTheFullAmount">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-001 Single-seller sale credits the full amount.]]>
+        <![CDATA[Test description: Error body follows the REQ-API-01 envelope.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:1:14).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response time under 2 s" time="0.012" classname="02SalesAndCreditingTcTxn001SingleSellerSaleCreditsTheFullAmount"/>
+    <testcase name="TC-TXN-001 status 201" time="0.012" classname="02SalesAndCreditingTcTxn001SingleSellerSaleCreditsTheFullAmount">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 500">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-001 Single-seller sale credits the full amount.]]>
+        <![CDATA[Test description: TC-TXN-001 status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 500.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 500
+   at Object.eval sandbox-script.js:1:14).]]>
+      </failure>
+    </testcase>
+    <testcase name="TC-TXN-001 credit lines" time="0.012" classname="02SalesAndCreditingTcTxn001SingleSellerSaleCreditsTheFullAmount">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-001 Single-seller sale credits the full amount.]]>
+        <![CDATA[Test description: TC-TXN-001 credit lines.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:2:14).]]>
+      </failure>
+    </testcase>
+    <testcase name="TC-TXN-001 posts to 2026-10" time="0.012" classname="02SalesAndCreditingTcTxn001SingleSellerSaleCreditsTheFullAmount">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-001 Single-seller sale credits the full amount.]]>
+        <![CDATA[Test description: TC-TXN-001 posts to 2026-10.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:3:14).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-API-005 Money is a two-decimal string" id="3045bf3f-8d47-4280-b5eb-978eb4cd87a0" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.006" classname="02SalesAndCreditingTcApi005MoneyIsATwoDecimalString"/>
+    <testcase name="Response time under 2 s" time="0.006" classname="02SalesAndCreditingTcApi005MoneyIsATwoDecimalString"/>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-002 Two-seller 70/30 split" id="44528f89-e4ee-4488-b8a2-41b2c57c4008" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="3" errors="0" time="0.013">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.013" classname="02SalesAndCreditingTcTxn002TwoSeller7030Split">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-002 Two-seller 70/30 split.]]>
+        <![CDATA[Test description: Error body follows the REQ-API-01 envelope.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:1:16).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response time under 2 s" time="0.013" classname="02SalesAndCreditingTcTxn002TwoSeller7030Split"/>
+    <testcase name="TC-TXN-002 status 201" time="0.013" classname="02SalesAndCreditingTcTxn002TwoSeller7030Split">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 500">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-002 Two-seller 70/30 split.]]>
+        <![CDATA[Test description: TC-TXN-002 status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 500.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 500
+   at Object.eval sandbox-script.js:1:16).]]>
+      </failure>
+    </testcase>
+    <testcase name="TC-TXN-002 credit lines" time="0.013" classname="02SalesAndCreditingTcTxn002TwoSeller7030Split">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-002 Two-seller 70/30 split.]]>
+        <![CDATA[Test description: TC-TXN-002 credit lines.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:2:16).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-003 Odd-cent split gives the remainder to the first seller" id="c66cd97f-f8b6-4ff1-a44d-2ca2c000916a" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="3" errors="0" time="0.010">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.010" classname="02SalesAndCreditingTcTxn003OddCentSplitGivesTheRemainderToTheFirstSeller">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-003 Odd-cent split gives the remainder to the first seller.]]>
+        <![CDATA[Test description: Error body follows the REQ-API-01 envelope.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:1:17).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response time under 2 s" time="0.010" classname="02SalesAndCreditingTcTxn003OddCentSplitGivesTheRemainderToTheFirstSeller"/>
+    <testcase name="TC-TXN-003 status 201" time="0.010" classname="02SalesAndCreditingTcTxn003OddCentSplitGivesTheRemainderToTheFirstSeller">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 500">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-003 Odd-cent split gives the remainder to the first seller.]]>
+        <![CDATA[Test description: TC-TXN-003 status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 500.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 500
+   at Object.eval sandbox-script.js:1:17).]]>
+      </failure>
+    </testcase>
+    <testcase name="TC-TXN-003 credit lines" time="0.010" classname="02SalesAndCreditingTcTxn003OddCentSplitGivesTheRemainderToTheFirstSeller">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-003 Odd-cent split gives the remainder to the first seller.]]>
+        <![CDATA[Test description: TC-TXN-003 credit lines.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:2:17).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-005 Splits must add up to 100" id="ecd566c0-f0ab-4006-8438-4e8fabf8b0f5" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="0" errors="0" time="0.006">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.006" classname="02SalesAndCreditingTcTxn005SplitsMustAddUpTo100"/>
+    <testcase name="Response time under 2 s" time="0.006" classname="02SalesAndCreditingTcTxn005SplitsMustAddUpTo100"/>
+    <testcase name="TC-TXN-005 status 422" time="0.006" classname="02SalesAndCreditingTcTxn005SplitsMustAddUpTo100"/>
+    <testcase name="TC-TXN-005 error code INVALID_SPLIT" time="0.006" classname="02SalesAndCreditingTcTxn005SplitsMustAddUpTo100"/>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-009 Inactive seller cannot receive credit" id="1a3ab039-e361-4b0f-ac56-45f33d937394" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="0" errors="0" time="0.007">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.007" classname="02SalesAndCreditingTcTxn009InactiveSellerCannotReceiveCredit"/>
+    <testcase name="Response time under 2 s" time="0.007" classname="02SalesAndCreditingTcTxn009InactiveSellerCannotReceiveCredit"/>
+    <testcase name="TC-TXN-009 status 422" time="0.007" classname="02SalesAndCreditingTcTxn009InactiveSellerCannotReceiveCredit"/>
+    <testcase name="TC-TXN-009 error code SELLER_INACTIVE" time="0.007" classname="02SalesAndCreditingTcTxn009InactiveSellerCannotReceiveCredit"/>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-012 Duplicate transaction is rejected" id="24da6c8c-1c52-4b73-9e44-326f81a24020" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="3" errors="0" time="0.011">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.011" classname="02SalesAndCreditingTcTxn012DuplicateTransactionIsRejected">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-012 Duplicate transaction is rejected.]]>
+        <![CDATA[Test description: Error body follows the REQ-API-01 envelope.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:1:20).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response time under 2 s" time="0.011" classname="02SalesAndCreditingTcTxn012DuplicateTransactionIsRejected"/>
+    <testcase name="TC-TXN-012 status 409" time="0.011" classname="02SalesAndCreditingTcTxn012DuplicateTransactionIsRejected">
+      <failure type="AssertionFailure" message="expected response to have status code 409 but got 500">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-012 Duplicate transaction is rejected.]]>
+        <![CDATA[Test description: TC-TXN-012 status 409.]]>
+        <![CDATA[Error message: expected response to have status code 409 but got 500.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 409 but got 500
+   at Object.eval sandbox-script.js:1:20).]]>
+      </failure>
+    </testcase>
+    <testcase name="TC-TXN-012 error code DUPLICATE_TRANSACTION" time="0.011" classname="02SalesAndCreditingTcTxn012DuplicateTransactionIsRejected">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 02 Sales and crediting / TC-TXN-012 Duplicate transaction is rejected.]]>
+        <![CDATA[Test description: TC-TXN-012 error code DUPLICATE_TRANSACTION.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:2:20).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="02 Sales and crediting / TC-TXN-018 Unknown transaction" id="e7f9a87b-7803-40cc-ae61-05349177cca3" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.006" classname="02SalesAndCreditingTcTxn018UnknownTransaction"/>
+    <testcase name="Response time under 2 s" time="0.006" classname="02SalesAndCreditingTcTxn018UnknownTransaction"/>
+  </testsuite>
+  <testsuite name="03 Returns and clawback / Setup: sale 10,000.00 split 70/30 on 2026-10-05" id="e5f9aaf0-241c-495b-83be-c817646040e3" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="2" errors="0" time="0.015">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.015" classname="03ReturnsAndClawbackSetupSale1000000Split7030On20261005">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 03 Returns and clawback / Setup: sale 10,000.00 split 70/30 on 2026-10-05.]]>
+        <![CDATA[Test description: Error body follows the REQ-API-01 envelope.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:1:22).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response time under 2 s" time="0.015" classname="03ReturnsAndClawbackSetupSale1000000Split7030On20261005"/>
+    <testcase name="Setup status 201" time="0.015" classname="03ReturnsAndClawbackSetupSale1000000Split7030On20261005">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 500">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 03 Returns and clawback / Setup: sale 10,000.00 split 70/30 on 2026-10-05.]]>
+        <![CDATA[Test description: Setup status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 500.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 500
+   at Object.eval sandbox-script.js:1:22).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="03 Returns and clawback / TC-RET-001 Return in the window mirrors the split" id="2468c565-38f2-4e59-8175-09c182b9bb43" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="2" errors="0" time="0.009">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.009" classname="03ReturnsAndClawbackTcRet001ReturnInTheWindowMirrorsTheSplit"/>
+    <testcase name="Response time under 2 s" time="0.009" classname="03ReturnsAndClawbackTcRet001ReturnInTheWindowMirrorsTheSplit"/>
+    <testcase name="TC-RET-001 status 201" time="0.009" classname="03ReturnsAndClawbackTcRet001ReturnInTheWindowMirrorsTheSplit">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 422">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 03 Returns and clawback / TC-RET-001 Return in the window mirrors the split.]]>
+        <![CDATA[Test description: TC-RET-001 status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 422.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 422
+   at Object.eval sandbox-script.js:1:23).]]>
+      </failure>
+    </testcase>
+    <testcase name="TC-RET-001 credit lines" time="0.009" classname="03ReturnsAndClawbackTcRet001ReturnInTheWindowMirrorsTheSplit">
+      <failure type="AssertionFailure" message="Cannot read properties of undefined (reading 'forEach')">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 03 Returns and clawback / TC-RET-001 Return in the window mirrors the split.]]>
+        <![CDATA[Test description: TC-RET-001 credit lines.]]>
+        <![CDATA[Error message: Cannot read properties of undefined (reading 'forEach').]]>
+        <![CDATA[Stacktrace: TypeError: Cannot read properties of undefined (reading 'forEach')
+   at Object.eval sandbox-script.js:2:23).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="03 Returns and clawback / TC-RET-002 Return on day 30 is clawed back" id="61b67ab3-ffb8-4d1b-94b3-11950c262f65" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="2" errors="0" time="0.007">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.007" classname="03ReturnsAndClawbackTcRet002ReturnOnDay30IsClawedBack"/>
+    <testcase name="Response time under 2 s" time="0.007" classname="03ReturnsAndClawbackTcRet002ReturnOnDay30IsClawedBack"/>
+    <testcase name="TC-RET-002 status 201" time="0.007" classname="03ReturnsAndClawbackTcRet002ReturnOnDay30IsClawedBack">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 422">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 03 Returns and clawback / TC-RET-002 Return on day 30 is clawed back.]]>
+        <![CDATA[Test description: TC-RET-002 status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 422.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 422
+   at Object.eval sandbox-script.js:1:24).]]>
+      </failure>
+    </testcase>
+    <testcase name="TC-RET-002 credit lines" time="0.007" classname="03ReturnsAndClawbackTcRet002ReturnOnDay30IsClawedBack">
+      <failure type="AssertionFailure" message="Cannot read properties of undefined (reading 'forEach')">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 03 Returns and clawback / TC-RET-002 Return on day 30 is clawed back.]]>
+        <![CDATA[Test description: TC-RET-002 credit lines.]]>
+        <![CDATA[Error message: Cannot read properties of undefined (reading 'forEach').]]>
+        <![CDATA[Stacktrace: TypeError: Cannot read properties of undefined (reading 'forEach')
+   at Object.eval sandbox-script.js:2:24).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="03 Returns and clawback / TC-RET-003 Return on day 31 has no clawback" id="e673b817-de0d-4c60-85d1-48d53ac78bc6" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="2" errors="0" time="0.009">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.009" classname="03ReturnsAndClawbackTcRet003ReturnOnDay31HasNoClawback"/>
+    <testcase name="Response time under 2 s" time="0.009" classname="03ReturnsAndClawbackTcRet003ReturnOnDay31HasNoClawback"/>
+    <testcase name="TC-RET-003 status 201" time="0.009" classname="03ReturnsAndClawbackTcRet003ReturnOnDay31HasNoClawback">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 422">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 03 Returns and clawback / TC-RET-003 Return on day 31 has no clawback.]]>
+        <![CDATA[Test description: TC-RET-003 status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 422.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 422
+   at Object.eval sandbox-script.js:1:25).]]>
+      </failure>
+    </testcase>
+    <testcase name="TC-RET-003 no credit lines" time="0.009" classname="03ReturnsAndClawbackTcRet003ReturnOnDay31HasNoClawback">
+      <failure type="AssertionFailure" message="expected undefined to deeply equal []">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 03 Returns and clawback / TC-RET-003 Return on day 31 has no clawback.]]>
+        <![CDATA[Test description: TC-RET-003 no credit lines.]]>
+        <![CDATA[Error message: expected undefined to deeply equal [].]]>
+        <![CDATA[Stacktrace: AssertionError: expected undefined to deeply equal []
+   at Object.eval sandbox-script.js:2:25).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="03 Returns and clawback / TC-RET-005 Returns cannot exceed the sale" id="29e0acfd-5608-4896-96ab-10f072196d93" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="1" errors="0" time="0.009">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.009" classname="03ReturnsAndClawbackTcRet005ReturnsCannotExceedTheSale"/>
+    <testcase name="Response time under 2 s" time="0.009" classname="03ReturnsAndClawbackTcRet005ReturnsCannotExceedTheSale"/>
+    <testcase name="TC-RET-005 status 422" time="0.009" classname="03ReturnsAndClawbackTcRet005ReturnsCannotExceedTheSale"/>
+    <testcase name="TC-RET-005 error code RETURN_EXCEEDS_SALE" time="0.009" classname="03ReturnsAndClawbackTcRet005ReturnsCannotExceedTheSale">
+      <failure type="AssertionFailure" message="expected 'UNKNOWN_ORIGINAL' to deeply equal 'RETURN_EXCEEDS_SALE'">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 03 Returns and clawback / TC-RET-005 Returns cannot exceed the sale.]]>
+        <![CDATA[Test description: TC-RET-005 error code RETURN_EXCEEDS_SALE.]]>
+        <![CDATA[Error message: expected 'UNKNOWN_ORIGINAL' to deeply equal 'RETURN_EXCEEDS_SALE'.]]>
+        <![CDATA[Stacktrace: AssertionError: expected 'UNKNOWN_ORIGINAL' to deeply equal 'RETURN_EXCEEDS_SALE'
+   at Object.eval sandbox-script.js:2:26).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: seller S00010" id="5b8765d2-9a2d-4c69-a9b8-ac850915ba21" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.010">
+    <testcase name="Response time under 2 s" time="0.010" classname="04CalculationSetupSellerS00010"/>
+    <testcase name="Setup status 201" time="0.010" classname="04CalculationSetupSellerS00010"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: quota S00010" id="e41ed554-98a3-4a06-b9c1-730c5689c572" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="04CalculationSetupQuotaS00010"/>
+    <testcase name="Setup status 201" time="0.009" classname="04CalculationSetupQuotaS00010"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: sale for S00010" id="f7298eb8-f305-4e6a-98fb-6dd3da40738d" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="2" errors="0" time="0.011">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.011" classname="04CalculationSetupSaleForS00010">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / Setup: sale for S00010.]]>
+        <![CDATA[Test description: Error body follows the REQ-API-01 envelope.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:1:29).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response time under 2 s" time="0.011" classname="04CalculationSetupSaleForS00010"/>
+    <testcase name="Setup status 201" time="0.011" classname="04CalculationSetupSaleForS00010">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 500">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / Setup: sale for S00010.]]>
+        <![CDATA[Test description: Setup status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 500.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 500
+   at Object.eval sandbox-script.js:1:29).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Calculation / TC-CAL-002 49,995.00 shows 50.00% but does not qualify" id="5771d30b-7ce8-45c1-ad59-814d47b9bda0" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="1" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="04CalculationTcCal0024999500Shows5000ButDoesNotQualify"/>
+    <testcase name="TC-CAL-002 status 200" time="0.009" classname="04CalculationTcCal0024999500Shows5000ButDoesNotQualify"/>
+    <testcase name="TC-CAL-002 statement values" time="0.009" classname="04CalculationTcCal0024999500Shows5000ButDoesNotQualify">
+      <failure type="AssertionFailure" message="expected [ '0.00', false, '0.00' ] to deeply equal [ '50.00', false, '0.00' ]">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / TC-CAL-002 49,995.00 shows 50.00% but does not qualify.]]>
+        <![CDATA[Test description: TC-CAL-002 statement values.]]>
+        <![CDATA[Error message: expected [ '0.00', false, '0.00' ] to deeply equal [ '50.00', false, '0.00' ].]]>
+        <![CDATA[Stacktrace: AssertionError: expected [ '0.00', false, '0.00' ] to deeply equal [ '50.00', false, '0.00' ]
+   at Object.eval sandbox-script.js:2:30).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: seller S00011" id="f80e3061-2d4e-498f-9a96-d53a7876569e" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.010">
+    <testcase name="Response time under 2 s" time="0.010" classname="04CalculationSetupSellerS00011"/>
+    <testcase name="Setup status 201" time="0.010" classname="04CalculationSetupSellerS00011"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: quota S00011" id="02980319-3a75-40d1-8304-91ed0fa5676b" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="04CalculationSetupQuotaS00011"/>
+    <testcase name="Setup status 201" time="0.009" classname="04CalculationSetupQuotaS00011"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: sale for S00011" id="a8a11314-2173-4cf3-8fd5-7fadfa39d7f5" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="2" errors="0" time="0.009">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.009" classname="04CalculationSetupSaleForS00011">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / Setup: sale for S00011.]]>
+        <![CDATA[Test description: Error body follows the REQ-API-01 envelope.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:1:33).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response time under 2 s" time="0.009" classname="04CalculationSetupSaleForS00011"/>
+    <testcase name="Setup status 201" time="0.009" classname="04CalculationSetupSaleForS00011">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 500">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / Setup: sale for S00011.]]>
+        <![CDATA[Test description: Setup status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 500.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 500
+   at Object.eval sandbox-script.js:1:33).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Calculation / TC-CAL-003 Exactly 50% qualifies" id="e9bee312-833d-486f-b605-0678dc124a12" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="1" errors="0" time="0.007">
+    <testcase name="Response time under 2 s" time="0.007" classname="04CalculationTcCal003Exactly50Qualifies"/>
+    <testcase name="TC-CAL-003 status 200" time="0.007" classname="04CalculationTcCal003Exactly50Qualifies"/>
+    <testcase name="TC-CAL-003 statement values" time="0.007" classname="04CalculationTcCal003Exactly50Qualifies">
+      <failure type="AssertionFailure" message="expected [ '0.00', false, '0.00' ] to deeply equal [ '50.00', true, '500.00' ]">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / TC-CAL-003 Exactly 50% qualifies.]]>
+        <![CDATA[Test description: TC-CAL-003 statement values.]]>
+        <![CDATA[Error message: expected [ '0.00', false, '0.00' ] to deeply equal [ '50.00', true, '500.00' ].]]>
+        <![CDATA[Stacktrace: AssertionError: expected [ '0.00', false, '0.00' ] to deeply equal [ '50.00', true, '500.00' ]
+   at Object.eval sandbox-script.js:2:34).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: seller S00012" id="0e8de8a1-0fef-420c-ba27-125a08200949" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.007">
+    <testcase name="Response time under 2 s" time="0.007" classname="04CalculationSetupSellerS00012"/>
+    <testcase name="Setup status 201" time="0.007" classname="04CalculationSetupSellerS00012"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: quota S00012" id="4d20e635-5fe1-4e30-9ecc-70d3f2a8a117" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Response time under 2 s" time="0.008" classname="04CalculationSetupQuotaS00012"/>
+    <testcase name="Setup status 201" time="0.008" classname="04CalculationSetupQuotaS00012"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: sale for S00012" id="0460e1d6-8e6d-456a-8d18-c48b2e086f40" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="2" errors="0" time="0.008">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.008" classname="04CalculationSetupSaleForS00012">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / Setup: sale for S00012.]]>
+        <![CDATA[Test description: Error body follows the REQ-API-01 envelope.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:1:37).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response time under 2 s" time="0.008" classname="04CalculationSetupSaleForS00012"/>
+    <testcase name="Setup status 201" time="0.008" classname="04CalculationSetupSaleForS00012">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 500">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / Setup: sale for S00012.]]>
+        <![CDATA[Test description: Setup status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 500.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 500
+   at Object.eval sandbox-script.js:1:37).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Calculation / TC-CAL-005 Exactly 100%" id="8b3be845-bcec-486d-ab52-34e34bf0ea44" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="1" errors="0" time="0.006">
+    <testcase name="Response time under 2 s" time="0.006" classname="04CalculationTcCal005Exactly100"/>
+    <testcase name="TC-CAL-005 status 200" time="0.006" classname="04CalculationTcCal005Exactly100"/>
+    <testcase name="TC-CAL-005 statement values" time="0.006" classname="04CalculationTcCal005Exactly100">
+      <failure type="AssertionFailure" message="expected [ '0.00', false, '0.00' ] to deeply equal [ '100.00', true, '1300.00' ]">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / TC-CAL-005 Exactly 100%.]]>
+        <![CDATA[Test description: TC-CAL-005 statement values.]]>
+        <![CDATA[Error message: expected [ '0.00', false, '0.00' ] to deeply equal [ '100.00', true, '1300.00' ].]]>
+        <![CDATA[Stacktrace: AssertionError: expected [ '0.00', false, '0.00' ] to deeply equal [ '100.00', true, '1300.00' ]
+   at Object.eval sandbox-script.js:2:38).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: seller S00013" id="f671e54c-e7f5-4923-9695-c31a958cc828" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Response time under 2 s" time="0.008" classname="04CalculationSetupSellerS00013"/>
+    <testcase name="Setup status 201" time="0.008" classname="04CalculationSetupSellerS00013"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: quota S00013" id="6e278175-28e4-46f4-902d-2c595159a7a5" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Response time under 2 s" time="0.008" classname="04CalculationSetupQuotaS00013"/>
+    <testcase name="Setup status 201" time="0.008" classname="04CalculationSetupQuotaS00013"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: sale for S00013" id="4e764e38-385d-443a-8561-cb976dff6375" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="2" errors="0" time="0.011">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.011" classname="04CalculationSetupSaleForS00013">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / Setup: sale for S00013.]]>
+        <![CDATA[Test description: Error body follows the REQ-API-01 envelope.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:1:41).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response time under 2 s" time="0.011" classname="04CalculationSetupSaleForS00013"/>
+    <testcase name="Setup status 201" time="0.011" classname="04CalculationSetupSaleForS00013">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 500">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / Setup: sale for S00013.]]>
+        <![CDATA[Test description: Setup status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 500.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 500
+   at Object.eval sandbox-script.js:1:41).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Calculation / TC-CAL-008 250% is capped" id="99a30f25-969b-4c01-b47d-df9f21e7eb8f" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="1" errors="0" time="0.011">
+    <testcase name="Response time under 2 s" time="0.011" classname="04CalculationTcCal008250IsCapped"/>
+    <testcase name="TC-CAL-008 status 200" time="0.011" classname="04CalculationTcCal008250IsCapped"/>
+    <testcase name="TC-CAL-008 statement values" time="0.011" classname="04CalculationTcCal008250IsCapped">
+      <failure type="AssertionFailure" message="expected [ '0.00', false, '0.00' ] to deeply equal [ '250.00', true, '5800.00' ]">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / TC-CAL-008 250% is capped.]]>
+        <![CDATA[Test description: TC-CAL-008 statement values.]]>
+        <![CDATA[Error message: expected [ '0.00', false, '0.00' ] to deeply equal [ '250.00', true, '5800.00' ].]]>
+        <![CDATA[Stacktrace: AssertionError: expected [ '0.00', false, '0.00' ] to deeply equal [ '250.00', true, '5800.00' ]
+   at Object.eval sandbox-script.js:2:42).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: seller S00014" id="7d5119dd-6149-4c96-8d6a-d3be23bbe791" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Response time under 2 s" time="0.008" classname="04CalculationSetupSellerS00014"/>
+    <testcase name="Setup status 201" time="0.008" classname="04CalculationSetupSellerS00014"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: quota S00014" id="f2ef9e7c-e592-42ad-a7e1-99dfa3d181ff" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="04CalculationSetupQuotaS00014"/>
+    <testcase name="Setup status 201" time="0.009" classname="04CalculationSetupQuotaS00014"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: sale for S00014" id="09886da3-efa6-421d-921a-799ae3e15f65" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="2" errors="0" time="0.008">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.008" classname="04CalculationSetupSaleForS00014">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / Setup: sale for S00014.]]>
+        <![CDATA[Test description: Error body follows the REQ-API-01 envelope.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:1:45).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response time under 2 s" time="0.008" classname="04CalculationSetupSaleForS00014"/>
+    <testcase name="Setup status 201" time="0.008" classname="04CalculationSetupSaleForS00014">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 500">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / Setup: sale for S00014.]]>
+        <![CDATA[Test description: Setup status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 500.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 500
+   at Object.eval sandbox-script.js:1:45).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Calculation / TC-CAL-010 Half-cent tie rounds up" id="cd6bec02-d84c-46e6-bfb9-0913a5cd2fee" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="1" errors="0" time="0.008">
+    <testcase name="Response time under 2 s" time="0.008" classname="04CalculationTcCal010HalfCentTieRoundsUp"/>
+    <testcase name="TC-CAL-010 status 200" time="0.008" classname="04CalculationTcCal010HalfCentTieRoundsUp"/>
+    <testcase name="TC-CAL-010 statement values" time="0.008" classname="04CalculationTcCal010HalfCentTieRoundsUp">
+      <failure type="AssertionFailure" message="expected [ '0.00', false, '0.00' ] to deeply equal [ '50.01', true, '50.01' ]">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / TC-CAL-010 Half-cent tie rounds up.]]>
+        <![CDATA[Test description: TC-CAL-010 statement values.]]>
+        <![CDATA[Error message: expected [ '0.00', false, '0.00' ] to deeply equal [ '50.01', true, '50.01' ].]]>
+        <![CDATA[Stacktrace: AssertionError: expected [ '0.00', false, '0.00' ] to deeply equal [ '50.01', true, '50.01' ]
+   at Object.eval sandbox-script.js:2:46).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: seller S00015" id="086a9f64-b27c-4f00-92de-c2f66be290ff" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.007">
+    <testcase name="Response time under 2 s" time="0.007" classname="04CalculationSetupSellerS00015"/>
+    <testcase name="Setup status 201" time="0.007" classname="04CalculationSetupSellerS00015"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: quota S00015" id="3bca46cd-ca3d-4a3b-897b-228072ceb6fb" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.013">
+    <testcase name="Response time under 2 s" time="0.013" classname="04CalculationSetupQuotaS00015"/>
+    <testcase name="Setup status 201" time="0.013" classname="04CalculationSetupQuotaS00015"/>
+  </testsuite>
+  <testsuite name="04 Calculation / Setup: sale for S00015" id="eac39d94-bbec-4b06-914c-041a5e425734" timestamp="2026-10-09T00:29:19.910Z" tests="3" failures="2" errors="0" time="0.011">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.011" classname="04CalculationSetupSaleForS00015">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / Setup: sale for S00015.]]>
+        <![CDATA[Test description: Error body follows the REQ-API-01 envelope.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:1:49).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response time under 2 s" time="0.011" classname="04CalculationSetupSaleForS00015"/>
+    <testcase name="Setup status 201" time="0.011" classname="04CalculationSetupSaleForS00015">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 500">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / Setup: sale for S00015.]]>
+        <![CDATA[Test description: Setup status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 500.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 500
+   at Object.eval sandbox-script.js:1:49).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="04 Calculation / TC-CAL-012 Band breakdown at 150%" id="4cd76930-e02f-4329-8006-ef434cfec2bf" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="2" errors="0" time="0.009">
+    <testcase name="Response time under 2 s" time="0.009" classname="04CalculationTcCal012BandBreakdownAt150"/>
+    <testcase name="TC-CAL-012 status 200" time="0.009" classname="04CalculationTcCal012BandBreakdownAt150"/>
+    <testcase name="TC-CAL-012 statement values" time="0.009" classname="04CalculationTcCal012BandBreakdownAt150">
+      <failure type="AssertionFailure" message="expected [ '0.00', false, '0.00' ] to deeply equal [ '150.00', true, '3300.00' ]">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / TC-CAL-012 Band breakdown at 150%.]]>
+        <![CDATA[Test description: TC-CAL-012 statement values.]]>
+        <![CDATA[Error message: expected [ '0.00', false, '0.00' ] to deeply equal [ '150.00', true, '3300.00' ].]]>
+        <![CDATA[Stacktrace: AssertionError: expected [ '0.00', false, '0.00' ] to deeply equal [ '150.00', true, '3300.00' ]
+   at Object.eval sandbox-script.js:2:50).]]>
+      </failure>
+    </testcase>
+    <testcase name="TC-CAL-012 band breakdown" time="0.009" classname="04CalculationTcCal012BandBreakdownAt150">
+      <failure type="AssertionFailure" message="expected { A: [ '0.00', '0.00' ], …(3) } to deeply equal { A: [ '80000.00', '800.00' ], …(3) }">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 04 Calculation / TC-CAL-012 Band breakdown at 150%.]]>
+        <![CDATA[Test description: TC-CAL-012 band breakdown.]]>
+        <![CDATA[Error message: expected { A: [ '0.00', '0.00' ], …(3) } to deeply equal { A: [ '80000.00', '800.00' ], …(3) }.]]>
+        <![CDATA[Stacktrace: AssertionError: expected { A: [ '0.00', '0.00' ], …(3) } to deeply equal { A: [ '80000.00', '800.00' ], …(3) }
+   at Object.eval sandbox-script.js:3:50).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="05 Import / TC-IMP-001 Batch with a sale and a same-batch return" id="cdead8ca-3dbb-4c6e-a2ee-93c4a96af7c2" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="3" errors="0" time="0.015">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.015" classname="05ImportTcImp001BatchWithASaleAndASameBatchReturn">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 05 Import / TC-IMP-001 Batch with a sale and a same-batch return.]]>
+        <![CDATA[Test description: Error body follows the REQ-API-01 envelope.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:1:51).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response time under 2 s" time="0.015" classname="05ImportTcImp001BatchWithASaleAndASameBatchReturn"/>
+    <testcase name="TC-IMP-001 status 201" time="0.015" classname="05ImportTcImp001BatchWithASaleAndASameBatchReturn">
+      <failure type="AssertionFailure" message="expected response to have status code 201 but got 500">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 05 Import / TC-IMP-001 Batch with a sale and a same-batch return.]]>
+        <![CDATA[Test description: TC-IMP-001 status 201.]]>
+        <![CDATA[Error message: expected response to have status code 201 but got 500.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 201 but got 500
+   at Object.eval sandbox-script.js:1:51).]]>
+      </failure>
+    </testcase>
+    <testcase name="TC-IMP-001 counts" time="0.015" classname="05ImportTcImp001BatchWithASaleAndASameBatchReturn">
+      <failure type="AssertionFailure" message="Unexpected token 'I' at 1:1&#xA;Internal Server Error&#xA;^">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: 68ebd1a2-35ae-4283-9d17-fb197f676b05.]]>
+        <![CDATA[Collection name: Commission Engine QA.]]>
+        <![CDATA[Request name: 05 Import / TC-IMP-001 Batch with a sale and a same-batch return.]]>
+        <![CDATA[Test description: TC-IMP-001 counts.]]>
+        <![CDATA[Error message: Unexpected token 'I' at 1:1
+Internal Server Error
+^.]]>
+        <![CDATA[Stacktrace: JSONError: Unexpected token 'I' at 1:1
+Internal Server Error
+^
+   at Object.eval sandbox-script.js:2:51).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="05 Import / TC-IMP-002 One invalid row rejects the whole batch" id="43f1c2b4-f3fa-4b38-bb21-bed6193faebc" timestamp="2026-10-09T00:29:19.910Z" tests="5" failures="0" errors="0" time="0.013">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.013" classname="05ImportTcImp002OneInvalidRowRejectsTheWholeBatch"/>
+    <testcase name="Response time under 2 s" time="0.013" classname="05ImportTcImp002OneInvalidRowRejectsTheWholeBatch"/>
+    <testcase name="TC-IMP-002 status 422" time="0.013" classname="05ImportTcImp002OneInvalidRowRejectsTheWholeBatch"/>
+    <testcase name="TC-IMP-002 error code IMPORT_REJECTED" time="0.013" classname="05ImportTcImp002OneInvalidRowRejectsTheWholeBatch"/>
+    <testcase name="TC-IMP-002 reports row 1 UNKNOWN_SELLER" time="0.013" classname="05ImportTcImp002OneInvalidRowRejectsTheWholeBatch"/>
+  </testsuite>
+  <testsuite name="05 Import / TC-IMP-002 Valid row of the rejected batch was not stored" id="f01c97c0-024b-49af-a1a6-ed4a5b87ab70" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.006" classname="05ImportTcImp002ValidRowOfTheRejectedBatchWasNotStored"/>
+    <testcase name="Response time under 2 s" time="0.006" classname="05ImportTcImp002ValidRowOfTheRejectedBatchWasNotStored"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-CLS-003 Periods close in order" id="2cb693a8-8d7c-4b90-a8b8-d7f8e7ccde0d" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.009" classname="06CloseAndLockTcCls003PeriodsCloseInOrder"/>
+    <testcase name="Response time under 2 s" time="0.009" classname="06CloseAndLockTcCls003PeriodsCloseInOrder"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-CLS-001 Close 2026-10" id="9d773c18-5bf3-4c17-82d3-a2f69c3e6009" timestamp="2026-10-09T00:29:19.910Z" tests="1" failures="0" errors="0" time="0.023">
+    <testcase name="Response time under 2 s" time="0.023" classname="06CloseAndLockTcCls001Close202610"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-CLS-001 Total payout equals the stored rows" id="5bc74c3e-ef10-4526-afe7-7e6bd0f3c66f" timestamp="2026-10-09T00:29:19.910Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="Response time under 2 s" time="0.007" classname="06CloseAndLockTcCls001TotalPayoutEqualsTheStoredRows"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-CLS-002 Closing twice is rejected" id="a7d8d63c-ffde-432b-8be8-66cddde9e20f" timestamp="2026-10-09T00:29:19.910Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.008" classname="06CloseAndLockTcCls002ClosingTwiceIsRejected"/>
+    <testcase name="Response time under 2 s" time="0.008" classname="06CloseAndLockTcCls002ClosingTwiceIsRejected"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-CLS-007 Statement after close uses stored values" id="f4536284-2ed6-41a9-8e99-b38ec3e955b3" timestamp="2026-10-09T00:29:19.910Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="Response time under 2 s" time="0.007" classname="06CloseAndLockTcCls007StatementAfterCloseUsesStoredValues"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-TXN-015 Sale dated in a closed period" id="9e996f3b-c168-4af3-885a-caeb455dec7f" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="0" errors="0" time="0.007">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.007" classname="06CloseAndLockTcTxn015SaleDatedInAClosedPeriod"/>
+    <testcase name="Response time under 2 s" time="0.007" classname="06CloseAndLockTcTxn015SaleDatedInAClosedPeriod"/>
+    <testcase name="TC-TXN-015 status 409" time="0.007" classname="06CloseAndLockTcTxn015SaleDatedInAClosedPeriod"/>
+    <testcase name="TC-TXN-015 error code PERIOD_CLOSED" time="0.007" classname="06CloseAndLockTcTxn015SaleDatedInAClosedPeriod"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-CLS-006 Return dated in a closed period" id="c513ac87-0a24-4c2d-9794-7d98124ec247" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="0" errors="0" time="0.006">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.006" classname="06CloseAndLockTcCls006ReturnDatedInAClosedPeriod"/>
+    <testcase name="Response time under 2 s" time="0.006" classname="06CloseAndLockTcCls006ReturnDatedInAClosedPeriod"/>
+    <testcase name="TC-CLS-006 status 409" time="0.006" classname="06CloseAndLockTcCls006ReturnDatedInAClosedPeriod"/>
+    <testcase name="TC-CLS-006 error code PERIOD_CLOSED" time="0.006" classname="06CloseAndLockTcCls006ReturnDatedInAClosedPeriod"/>
+  </testsuite>
+  <testsuite name="06 Close and lock / TC-QTA-004 Quota change in a closed period" id="d78336f3-a8c8-47f7-ad90-5bd541609f1f" timestamp="2026-10-09T00:29:19.910Z" tests="4" failures="0" errors="0" time="0.007">
+    <testcase name="Error body follows the REQ-API-01 envelope" time="0.007" classname="06CloseAndLockTcQta004QuotaChangeInAClosedPeriod"/>
+    <testcase name="Response time under 2 s" time="0.007" classname="06CloseAndLockTcQta004QuotaChangeInAClosedPeriod"/>
+    <testcase name="TC-QTA-004 status 409" time="0.007" classname="06CloseAndLockTcQta004QuotaChangeInAClosedPeriod"/>
+    <testcase name="TC-QTA-004 error code PERIOD_CLOSED" time="0.007" classname="06CloseAndLockTcQta004QuotaChangeInAClosedPeriod"/>
+  </testsuite>
+</testsuites>

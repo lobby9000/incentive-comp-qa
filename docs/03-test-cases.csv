@@ -1,0 +1,92 @@
+tc_id,requirement,suite,title,technique,priority,preconditions,steps,expected,automation
+TC-API-001,REQ-API-01,api,Health endpoint answers with status and build version,Smoke,P3,Server running,GET /health,"200, status ok, version is a string",pytest + Postman
+TC-API-002,REQ-API-01,api,Business error uses the standard error body,Error guessing,P3,None,GET /sellers/S99999,"404, error.code SELLER_NOT_FOUND, message present, details is a list",pytest + Postman
+TC-API-003,REQ-API-01,api,Missing required field returns VALIDATION_ERROR with its location,EP invalid,P2,None,POST /sellers without name,"422 VALIDATION_ERROR, a detail loc ends with name",pytest + Postman
+TC-API-004,REQ-API-01,api,Unknown field in the body is rejected,EP invalid,P3,None,POST /sellers with an extra field,422 VALIDATION_ERROR,pytest
+TC-API-005,REQ-API-02,api,Money in responses is a string with two decimals,EP valid,P3,Seller in T1000,"POST SALE amount 1500.5, then GET it","amount and credit are ""1500.50""",pytest + Postman
+TC-API-006,REQ-API-01,api,Unknown route and wrong method use the standard error body,Error guessing,P3,None,GET /nope and DELETE /health,404 and 405 with error.code in the body,pytest
+TC-API-007,REQ-API-01,api,Malformed JSON returns VALIDATION_ERROR,Error guessing,P3,None,POST /sellers with body '{',422 VALIDATION_ERROR,pytest
+TC-SEL-001,REQ-FLD-01,sellers,Create a seller with valid data,EP valid,P2,Store T1000 exists,POST /sellers,"201, body echoes the input, status ACTIVE",pytest + Postman
+TC-SEL-002,REQ-FLD-01,sellers,Duplicate seller_id is rejected,EP invalid,P2,S00001 exists,POST /sellers with the same id,409 DUPLICATE_SELLER,pytest + Postman
+TC-SEL-003,REQ-FLD-01,sellers,Unknown store is rejected,EP invalid,P2,None,POST /sellers with store T9999,422 UNKNOWN_STORE,pytest
+TC-SEL-004,REQ-FLD-01,sellers,seller_id format boundaries,"BVA, EP",P3,None,"POST ids S1234, S123456, s12345, X12345, S1234A and S00000","422 VALIDATION_ERROR for the first five, 201 for S00000",pytest
+TC-SEL-005,REQ-FLD-01,sellers,Name length and blank name,BVA,P3,None,"POST names of 80 and 81 characters, blank and empty","201 for 80 characters, 422 VALIDATION_ERROR for the rest",pytest
+TC-SEL-006,REQ-FLD-01,sellers,Read an unknown seller,EP invalid,P3,None,GET /sellers/S77777,404 SELLER_NOT_FOUND,pytest
+TC-SEL-007,REQ-CRD-03,sellers,Deactivate a seller and reject an invalid status,State transition,P2,Seller exists,"PATCH status INACTIVE, then PATCH status FIRED","200 with status INACTIVE, then 422 VALIDATION_ERROR",pytest + Postman
+TC-QTA-001,REQ-API-01,quotas,"Create a quota, then replace it",State transition,P2,Seller exists,"PUT 1000.00, then PUT 2000.00","201, then 200 with amount ""2000.00""",pytest + Postman
+TC-QTA-002,REQ-FLD-03,quotas,Quota amount boundaries,BVA,P2,Seller exists,"PUT 0.00, 0.01, 10000000.00, 10000000.01, -5 and 100.005","201 or 200 for 0.01 and 10000000.00, 422 VALIDATION_ERROR for the rest",pytest
+TC-QTA-003,REQ-API-01,quotas,Quota for an unknown period or seller,EP invalid,P3,Seller exists,PUT /periods/2026-09/quotas/{id} and PUT for S88888,404 PERIOD_NOT_FOUND and 404 SELLER_NOT_FOUND,pytest
+TC-QTA-004,REQ-CLS-04,quotas,Quota change in a closed period,State transition,P1,2026-10 closed,PUT quota for 2026-10,409 PERIOD_CLOSED,pytest + Postman
+TC-TXN-001,"REQ-CRD-02, REQ-CRD-05",transactions,Single-seller sale credits the full amount to the sale's period,EP valid,P1,Seller in T1000,"POST SALE 2026-10-15, 1500.50, split 100","201, one credit of 1500.50 in period 2026-10",pytest + Postman
+TC-TXN-002,REQ-CRD-02,transactions,Two-seller 70/30 split,EP valid,P1,Two sellers in T1000,POST SALE 10000.00 split 70/30,Credits 7000.00 and 3000.00,pytest + Postman
+TC-TXN-003,REQ-CRD-02,transactions,Odd-cent 50/50 split gives the remainder to the first seller,BVA,P1,Two sellers,POST SALE 100.01 split 50/50,"Credits 50.01 and 50.00, total 100.01",pytest + Postman
+TC-TXN-004,REQ-CRD-02,transactions,One-cent sale split 99/1 stores a 0.00 line,BVA,P1,Two sellers,POST SALE 0.01 split 99/1,Two credit lines: 0.01 and 0.00,pytest
+TC-TXN-005,REQ-CRD-01,transactions,Splits that do not add up to 100,BVA,P2,Two sellers,"POST splits 60/39, 60/41 and 100/1",422 INVALID_SPLIT,pytest + Postman
+TC-TXN-006,REQ-CRD-01,transactions,Zero or three credit lines,EP invalid,P3,Three sellers,POST credits [] and three lines,422 VALIDATION_ERROR,pytest
+TC-TXN-007,REQ-CRD-03,transactions,Same seller twice in one sale,EP invalid,P2,Seller exists,"POST credits [S 50, S 50]",422 DUPLICATE_SELLER,pytest
+TC-TXN-008,REQ-CRD-03,transactions,Unknown seller in credits,EP invalid,P2,None,POST credit to S99999,422 UNKNOWN_SELLER,pytest
+TC-TXN-009,REQ-CRD-03,transactions,Inactive seller cannot receive new credit,State transition,P2,Seller INACTIVE,POST SALE crediting the seller,422 SELLER_INACTIVE,pytest + Postman
+TC-TXN-010,REQ-CRD-04,transactions,"Primary seller must belong to the store, secondary may not",Decision table,P2,Sellers in T1000 and T1001,"POST at T1000 with primary from T1001, then with secondary from T1001","422 PRIMARY_SELLER_STORE_MISMATCH, then 201",pytest
+TC-TXN-011,REQ-FLD-03,transactions,Transaction amount boundaries and formats,"BVA, EP",P2,Seller exists,"POST amounts 0.00, 0.01, 1000000.00, 1000000.01, -1, 10.005, ""1500.50"" and 1e3","201 for 0.01, 1000000.00, ""1500.50"" and 1e3, 422 VALIDATION_ERROR for the rest",pytest
+TC-TXN-012,REQ-FLD-02,transactions,Duplicate transaction_id is rejected and nothing is counted twice,Error guessing,P1,Sale X exists,POST the same body again,"409 DUPLICATE_TRANSACTION, credited total unchanged",pytest + Postman
+TC-TXN-013,REQ-FLD-02,transactions,transaction_id format boundaries,BVA,P3,Seller exists,"POST ids of 32 and 33 characters, with a space, and empty","201 for 32 characters, 422 VALIDATION_ERROR for the rest",pytest
+TC-TXN-014,REQ-FLD-04,transactions,Plan date boundaries,BVA,P2,Seller exists,"POST dates 2026-09-30, 2026-10-01, 2026-12-31 and 2027-01-01","422 OUT_OF_PLAN at both ends, 201 inside",pytest
+TC-TXN-015,REQ-CLS-04,transactions,Sale dated in a closed period,State transition,P1,2026-10 closed,POST SALE dated 2026-10-31,409 PERIOD_CLOSED,pytest + Postman
+TC-TXN-016,REQ-FLD-05,transactions,SALE carrying original_transaction_id,EP invalid,P3,Sale exists,POST SALE with original_transaction_id,422 VALIDATION_ERROR,pytest
+TC-TXN-017,REQ-FLD-01,transactions,Sale at an unknown store,EP invalid,P3,Seller exists,POST store T9999,422 UNKNOWN_STORE,pytest
+TC-TXN-018,REQ-API-01,transactions,"Read a transaction with its credit lines, and an unknown one",EP,P3,Sale exists,GET /transactions/{id} and GET an unknown id,"200 with credit lines, then 404 TRANSACTION_NOT_FOUND",pytest + Postman
+TC-RET-001,"REQ-RET-04, REQ-RET-05",returns,Full return in the window mirrors the split as negative credits,EP valid,P1,SALE 10000.00 70/30 on 2026-10-05,POST RETURN 10000.00 on 2026-10-20,Credits -7000.00 and -3000.00,pytest + Postman
+TC-RET-002,REQ-RET-04,returns,Return on day 30 is clawed back,BVA,P1,SALE on 2026-10-05,POST RETURN 1000.00 on 2026-11-04,Negative credit lines are created,pytest + Postman
+TC-RET-003,REQ-RET-04,returns,Return on day 31 has no clawback,BVA,P1,SALE on 2026-10-05,POST RETURN 1000.00 on 2026-11-05,201 with no credit lines,pytest + Postman
+TC-RET-004,REQ-RET-04,returns,Odd-cent partial return with a 70/30 split,BVA,P1,SALE 10000.00 70/30,POST RETURN 100.01,Credits -70.01 and -30.00,pytest
+TC-RET-005,REQ-RET-02,returns,Cumulative partial returns up to the sale amount,BVA,P1,SALE 1000.00,"POST RETURN 600.00, 400.00, then 0.01","201, 201, then 422 RETURN_EXCEEDS_SALE",pytest + Postman
+TC-RET-006,REQ-RET-03,returns,Return dated before the sale,BVA,P2,SALE on 2026-10-10,POST RETURN on 2026-10-09,422 RETURN_BEFORE_SALE,pytest
+TC-RET-007,REQ-RET-01,returns,Return of an unknown transaction,EP invalid,P2,None,POST RETURN of NOPE-1,422 UNKNOWN_ORIGINAL,pytest
+TC-RET-008,REQ-RET-01,returns,Return of a return,EP invalid,P3,SALE and its RETURN,POST RETURN referencing the RETURN,422 INVALID_ORIGINAL,pytest
+TC-RET-009,REQ-RET-01,returns,Return carrying its own credits,EP invalid,P3,SALE exists,POST RETURN with credits,422 CREDITS_NOT_ALLOWED,pytest
+TC-RET-010,"REQ-RET-05, REQ-CRD-05",returns,Return posts to the period of the return date,EP valid,P1,"October SALE 10000.00, quotas in 2026-10 and 2026-11",POST RETURN 2000.00 dated 2026-11-02,"2026-10 credited stays 10000.00, 2026-11 credited is -2000.00",pytest
+TC-RET-011,REQ-RET-05,returns,Clawback still applies to a seller who is now INACTIVE,State transition,P2,"SALE, then seller set INACTIVE",POST RETURN in the window,201 with a negative credit for the inactive seller,pytest
+TC-RET-012,REQ-RET-04,returns,Same-day return is clawed back,BVA,P3,SALE on 2026-10-10,POST RETURN on 2026-10-10,Negative credit lines are created,pytest
+TC-CAL-001,REQ-CAL-03,calculation,"49,999.99 of 100,000.00 is just below the gate",BVA,P1,Quota 100000.00,"Credit 49999.99, GET statement","attainment 50.00, qualified false, payout 0.00",pytest
+TC-CAL-002,"REQ-CAL-03, REQ-CAL-06",calculation,"49,995.00 shows 50.00% but does not qualify","BVA, error guessing",P1,Quota 100000.00,"Credit 49995.00, GET statement","attainment 50.00, qualified false, payout 0.00",pytest + Postman
+TC-CAL-003,REQ-CAL-03,calculation,Exactly 50% qualifies,BVA,P1,Quota 100000.00,"Credit 50000.00, GET statement","qualified true, payout 500.00",pytest + Postman
+TC-CAL-004,REQ-CAL-04,calculation,Exactly 80% (band A to B),BVA,P1,Quota 100000.00,Credit 80000.00,payout 800.00,pytest
+TC-CAL-005,REQ-CAL-04,calculation,Exactly 100% (band B to C),BVA,P1,Quota 100000.00,Credit 100000.00,payout 1300.00,pytest + Postman
+TC-CAL-006,REQ-CAL-04,calculation,Exactly 150% (band C to D),BVA,P1,Quota 100000.00,Credit 150000.00,payout 3300.00,pytest
+TC-CAL-007,REQ-CAL-04,calculation,Exactly 200% (cap limit),BVA,P1,Quota 100000.00,Credit 200000.00,payout 5800.00,pytest
+TC-CAL-008,REQ-CAL-04,calculation,250% is capped,BVA,P1,Quota 100000.00,Credit 250000.00,payout 5800.00,pytest + Postman
+TC-CAL-009,REQ-CAL-05,calculation,Negative net credit pays 0.00 and shows negative attainment,EP,P1,Quota 100000.00,Net credit -1500.00,"attainment -1.50, payout 0.00",pytest
+TC-CAL-010,REQ-CAL-06,calculation,Half-cent tie rounds up,"BVA, error guessing",P1,Quota 10000.00,Credit 5000.50,payout 50.01,pytest + Postman
+TC-CAL-011,"REQ-CAL-04, REQ-CAL-06",calculation,Band limits that fall between cents,BVA,P1,Quota 33333.33,Credit 30000.00,payout 350.00,pytest
+TC-CAL-012,REQ-STM-01,calculation,Statement band breakdown at 150%,EP valid,P2,Quota 100000.00,"Credit 150000.00, GET statement","Bands A 80000.00/800.00, B 20000.00/500.00, C 50000.00/2000.00, D 0.00/0.00",pytest + Postman
+TC-CAL-013,REQ-STM-04,calculation,Statement for a seller without a quota,EP invalid,P3,Seller without quota,GET statement,404 QUOTA_NOT_FOUND,pytest
+TC-CAL-014,REQ-CAL-06,calculation,Attainment display rounds half-up,BVA,P3,Quotas 30000.00 and 100000.00,"Credits giving 33.333%, 66.666% and 12.345%","33.33, 66.67 and 12.35",pytest
+TC-CAL-015,REQ-STM-03,calculation,Displayed band commission tie rounds half-up,BVA,P3,Quota 10000.00,"Credit 5000.50, GET statement","Band A commission ""50.01""",pytest
+TC-CAL-016,REQ-STM-02,calculation,Live statement reflects a new sale immediately,State transition,P2,Quota 100000.00,"GET statement, POST SALE 10000.00, GET statement",net credited grows by 10000.00 and source is LIVE,pytest
+TC-CLS-001,"REQ-CLS-03, REQ-CLS-05",close,Close stores one row per quota and the total equals the rows,EP valid,P1,Three sellers with quotas and sales,"POST close, GET payouts","200, sellers 3, total_payout equals the sum of the rows",pytest + Postman
+TC-CLS-002,REQ-CLS-01,close,Closing twice is rejected without duplicate rows,State transition,P1,2026-10 closed,POST close again,"409 PERIOD_ALREADY_CLOSED, payout rows unchanged",pytest + Postman
+TC-CLS-003,REQ-CLS-01,close,Periods close in order,State transition,P2,2026-10 open,POST close 2026-11,409 PREVIOUS_PERIOD_OPEN,pytest + Postman
+TC-CLS-004,REQ-CLS-02,close,Credited seller without quota blocks the close,EP invalid,P1,Seller credited without quota,POST close,"409 QUOTA_MISSING listing the seller, period stays OPEN",pytest
+TC-CLS-005,REQ-CLS-03,close,Seller with a quota and no credits gets a 0.00 row,EP valid,P2,"Quota, no sales","POST close, GET payouts",Row with net credited 0.00 and payout 0.00,pytest
+TC-CLS-006,REQ-CLS-04,close,A closed period rejects sales and returns dated in it,State transition,P1,2026-10 closed,POST SALE and RETURN dated in 2026-10,409 PERIOD_CLOSED for both,pytest + Postman
+TC-CLS-007,REQ-STM-02,close,Statement after close returns the stored values,State transition,P2,2026-10 closed,GET statement,"source CLOSED, payout equals the stored row",pytest + Postman
+TC-CLS-008,REQ-API-01,close,Payouts of an open period,State transition,P3,2026-11 open,GET /periods/2026-11/payouts,409 PERIOD_NOT_CLOSED,pytest
+TC-CLS-009,REQ-API-01,close,Close an unknown period,EP invalid,P3,None,POST /periods/2027-01/close,404 PERIOD_NOT_FOUND,pytest
+TC-IMP-001,REQ-IMP-01,import,Valid batch with a sale and a same-batch return,EP valid,P2,Seller exists,"POST import [sale, return of that sale]","201 with imported 2, sales 1, returns 1",pytest + Postman
+TC-IMP-002,REQ-IMP-02,import,One business-invalid row rejects the whole batch,EP invalid,P1,Seller exists,"POST import [valid, unknown seller, valid]","422 IMPORT_REJECTED with row 1 UNKNOWN_SELLER, row 0 not stored",pytest + Postman
+TC-IMP-003,REQ-IMP-02,import,Schema-invalid row reports its index and stores nothing,EP invalid,P2,Seller exists,POST import where row 2 has amount 0,"422 VALIDATION_ERROR with row 2 in loc, nothing stored",pytest
+TC-IMP-004,"REQ-IMP-02, REQ-FLD-02",import,Duplicate transaction_id inside one batch,Error guessing,P1,Seller exists,POST import with two rows sharing an id,422 IMPORT_REJECTED with row 1 DUPLICATE_TRANSACTION,pytest
+TC-IMP-005,REQ-IMP-01,import,Batch size boundaries,BVA,P3,Seller exists,"POST 5000 rows, then 5001 rows","201, then 422 VALIDATION_ERROR",pytest
+TC-IMP-006,"REQ-IMP-01, REQ-RET-02",import,Returns inside one batch cannot exceed their sale,BVA,P2,Seller exists,"POST [sale 100.00, return 60.00, return 41.00]",422 IMPORT_REJECTED with row 2 RETURN_EXCEEDS_SALE,pytest
+TC-DB-001,REQ-CRD-02,database,Credits of each sale add up to the sale amount,SQL invariant,P1,Full dataset loaded and closed (PostgreSQL),Run sql/01_sale_credits_sum.sql,0 rows,pytest
+TC-DB-002,REQ-RET-04,database,"Returns in the window net to minus their amount, others have no credits",SQL invariant,P1,Full dataset loaded,Run sql/02_return_credits.sql,0 rows,pytest
+TC-DB-003,"REQ-CRD-02, REQ-RET-04",database,Second seller's credit follows the floor rule,SQL invariant,P1,Full dataset loaded,Run sql/03_split_floor_rule.sql,0 rows,pytest
+TC-DB-004,REQ-RET-02,database,Total returned per sale never exceeds the sale,SQL invariant,P1,Full dataset loaded,Run sql/04_returns_not_exceed_sale.sql,0 rows,pytest
+TC-DB-005,"REQ-CRD-05, REQ-RET-05",database,Every credit posts to the period of its transaction date,SQL invariant,P1,Full dataset loaded,Run sql/05_credit_period.sql,0 rows,pytest
+TC-DB-006,REQ-CLS-03,database,Exactly one payout row per quota in each closed period,SQL invariant,P1,Full dataset closed,Run sql/06_payout_per_quota.sql,0 rows,pytest
+TC-DB-007,REQ-CAL-01,database,Stored credited amount equals the sum of credit lines,SQL invariant,P1,Full dataset closed,Run sql/07_payout_credited.sql,0 rows,pytest
+TC-DB-008,REQ-CLS-04,database,Nothing was written to a period after it closed,SQL invariant,P1,Full dataset closed,Run sql/08_no_writes_after_close.sql,0 rows,pytest
+TC-DB-009,REQ-CRD-04,database,Primary seller of each sale belongs to the sale's store,SQL invariant,P2,Full dataset loaded,Run sql/09_primary_store.sql,0 rows,pytest
+TC-REC-001,REQ-CAL-01 to REQ-CAL-06,reconciliation,Every payout matches the Excel oracle to the cent,Parallel run,P1,Full dataset loaded and closed,Compare GET payouts with oracle/oracle_payouts.csv,"750 of 750 rows match on credited, attainment, qualification and payout",pytest
+TC-REC-002,REQ-CLS-05,reconciliation,Close totals per period match the oracle,Parallel run,P1,Full dataset closed,Compare close responses with oracle/oracle_summary.json,Rows and total payout match for the three periods,pytest
+TC-REC-003,REQ-API-02,reconciliation,API payout list matches the stored rows,Parallel run,P2,Full dataset closed,Compare GET payouts with the payout table,All rows identical,pytest

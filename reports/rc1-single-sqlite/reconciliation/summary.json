@@ -1,0 +1,57 @@
+{
+  "version": "0.1.0-rc1",
+  "mode": "single",
+  "status": "COMPLETED",
+  "rows_compared": 750,
+  "transactions_loaded": 25259,
+  "seconds": 198.7,
+  "close_responses": {
+    "2026-10": {
+      "period_id": "2026-10",
+      "status": "CLOSED",
+      "sellers": 251,
+      "total_payout": "1085928.65"
+    },
+    "2026-11": {
+      "period_id": "2026-11",
+      "status": "CLOSED",
+      "sellers": 251,
+      "total_payout": "1306448.98"
+    },
+    "2026-12": {
+      "period_id": "2026-12",
+      "status": "CLOSED",
+      "sellers": 248,
+      "total_payout": "1573254.37"
+    }
+  },
+  "rows_matching": 552,
+  "rows_with_mismatch": 198,
+  "mismatches_by_field": {
+    "net_credited": 193,
+    "payout": 33,
+    "attainment_pct": 32,
+    "qualified": 1
+  },
+  "net_payout_difference_api_minus_oracle": "6566.74",
+  "period_total_mismatches": [
+    {
+      "period_id": "2026-10",
+      "field": "total_payout",
+      "api": "1085928.65",
+      "oracle": "1084829.53"
+    },
+    {
+      "period_id": "2026-11",
+      "field": "total_payout",
+      "api": "1306448.98",
+      "oracle": "1304541.23"
+    },
+    {
+      "period_id": "2026-12",
+      "field": "total_payout",
+      "api": "1573254.37",
+      "oracle": "1569694.50"
+    }
+  ]
+}

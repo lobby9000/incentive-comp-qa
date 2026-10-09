@@ -4,7 +4,7 @@
 |---|---|
 | Document | Requirements and acceptance criteria |
 | Plan | RET-Q4-2026, retail floor sales, Q4 FY2026 |
-| Version | 1.0 (baseline for build `0.1.0-rc1`) |
+| Version | 1.1 (1.0 was the baseline for build `0.1.0-rc1`, 1.1 adds clarifications from test design, see section 6) |
 | Currency | MXN |
 | Status | Approved for implementation |
 
@@ -39,7 +39,7 @@ The store network is the 61-store dimension from the
 
 | ID | Requirement |
 |---|---|
-| REQ-CRD-01 | A SALE credits 1 or 2 sellers. Each credit line has an integer `split_pct` from 1 to 100 and the splits of a sale add up to exactly 100. |
+| REQ-CRD-01 | A SALE credits 1 or 2 sellers (`VALIDATION_ERROR` otherwise). Each credit line has an integer `split_pct` from 1 to 100 and the splits of a sale add up to exactly 100 (`INVALID_SPLIT`). |
 | REQ-CRD-02 | Credits are allocated in cents. With two sellers, the second seller receives `floor(amount_cents * split_pct / 100)` and the first seller receives the remainder. The credits of a transaction always add up exactly to its amount. A credit line is stored even when its value is 0.00. |
 | REQ-CRD-03 | Every credited seller must exist (`UNKNOWN_SELLER`) and be ACTIVE (`SELLER_INACTIVE`). A seller cannot appear twice in the same sale (`DUPLICATE_SELLER`). |
 | REQ-CRD-04 | The first seller of a sale must belong to the sale's store (`PRIMARY_SELLER_STORE_MISMATCH`). The second seller may belong to any store (floating staff). |
@@ -49,7 +49,7 @@ The store network is the 61-store dimension from the
 
 | ID | Requirement |
 |---|---|
-| REQ-RET-01 | A RETURN references an existing SALE through `original_transaction_id` (`UNKNOWN_ORIGINAL`). Referencing a RETURN is rejected (`INVALID_ORIGINAL`). A RETURN must not include `credits`; it inherits the sellers and splits of the original sale (`CREDITS_NOT_ALLOWED`). |
+| REQ-RET-01 | A RETURN references an existing SALE through `original_transaction_id` (`UNKNOWN_ORIGINAL`). Referencing a RETURN is rejected (`INVALID_ORIGINAL`). A RETURN must not include `credits` because it inherits the sellers and splits of the original sale (`CREDITS_NOT_ALLOWED`). |
 | REQ-RET-02 | The total returned against a sale cannot exceed the sale amount (`RETURN_EXCEEDS_SALE`). |
 | REQ-RET-03 | The return date cannot be earlier than the sale date (`RETURN_BEFORE_SALE`). |
 | REQ-RET-04 | Clawback window: when `return_date - sale_date` is **30 calendar days or less**, the return creates negative credits. Their magnitudes are computed with the REQ-CRD-02 rule applied to the return amount and then negated. When the difference is 31 days or more, the return is stored but creates **no credit lines**. |
@@ -70,7 +70,7 @@ The store network is the 61-store dimension from the
 | | Above 200%: 0% (cap) |
 | | `payout = sum over bands of rate * max(0, min(C, upper * Q) - lower * Q)` |
 | REQ-CAL-05 | The payout is never negative. When `C <= 0` the payout is 0.00 and the negative attainment is still reported. |
-| REQ-CAL-06 | All intermediate values keep full precision. Only the final payout is rounded to cents, **half-up** (0.005 rounds to 0.01). Attainment is displayed as a percentage with 2 decimals, half-up. |
+| REQ-CAL-06 | All intermediate values keep full precision. Only the final payout is rounded to cents, **half-up** (0.005 rounds to 0.01). Attainment is displayed as a percentage with 2 decimals, half-up, with ties on negative values rounding away from zero. |
 
 #### Worked examples (Q = 100,000.00 unless stated)
 
@@ -103,7 +103,7 @@ The store network is the 61-store dimension from the
 |---|---|
 | REQ-STM-01 | `GET /periods/{period}/sellers/{seller}/statement` returns quota, net credited sales, attainment, the qualification flag, one entry per band (base and commission) and the payout. |
 | REQ-STM-02 | For an OPEN period the statement is calculated live (`source: LIVE`). For a CLOSED period it returns the stored payout (`source: CLOSED`). |
-| REQ-STM-03 | Band commissions are shown rounded individually for readability. The payout is rounded once from the exact total (REQ-CAL-06), so it may differ from the sum of the displayed band values by at most 0.01 per band. |
+| REQ-STM-03 | Band commissions are shown rounded individually (half-up) for readability. The payout is rounded once from the exact total (REQ-CAL-06), so it may differ from the sum of the displayed band values by at most 0.01 per band. |
 | REQ-STM-04 | A statement for a seller without a quota in the period returns `QUOTA_NOT_FOUND`. |
 
 ## 4. API contract
@@ -148,10 +148,17 @@ The store network is the 61-store dimension from the
 | ID | Requirement |
 |---|---|
 | REQ-IMP-01 | `POST /imports/transactions` accepts 1 to 5,000 transactions applying the same rules as `POST /transactions`. Rows are processed in order, so a return may reference a sale earlier in the same batch. |
-| REQ-IMP-02 | The import is atomic. If any row fails, nothing is stored and the response lists every failing row with its index and error code. |
+| REQ-IMP-02 | The import is atomic. If any row fails, nothing is stored and the response lists every failing row with its index and error code. Schema errors keep the `VALIDATION_ERROR` body with the row index in `details[].loc`, and business-rule failures return `IMPORT_REJECTED`. |
 
 ## 5. Out of scope for v1
 
 Authentication, multi-currency, carry-forward of negative balances, draws and
 guarantees, SPIFFs, quota proration for mid-period hires, and a user
 interface. These are listed so that their absence is a decision, not a gap.
+
+## 6. Revision history
+
+| Version | Change | Source |
+|---|---|---|
+| 1.0 | Baseline for build `0.1.0-rc1`. | |
+| 1.1 | Error codes for split and credit-count failures (REQ-CRD-01). Schema errors inside imports (REQ-IMP-02). Half-up rounding for displayed band values (REQ-STM-03) and for negative attainment (REQ-CAL-06). Clarifications only, no rule changed. | Requirements review RR-01 to RR-04 in `docs/02-test-plan.md` |
