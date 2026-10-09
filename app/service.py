@@ -168,7 +168,7 @@ def build_transaction(session: Session, data: TransactionIn, pending: dict | Non
             raise ApiError(422, "RETURN_EXCEEDS_SALE", "Total returned would exceed the sale amount")
 
         days = (data.txn_date - original.txn_date).days
-        if days < CLAWBACK_DAYS:
+        if days <= CLAWBACK_DAYS:  # BUG-004: day 30 is inside the window
             orig_credits = pending_credits.get(original.transaction_id) or session.exec(
                 select(Credit).where(Credit.transaction_id == original.transaction_id).order_by(Credit.line_no)
             ).all()
