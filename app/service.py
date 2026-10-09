@@ -95,9 +95,15 @@ def split_cents(amount_cents: int, splits: list[int]) -> list[int]:
     return [amount_cents - second, second]
 
 
-def build_transaction(session: Session, data: TransactionIn, pending: dict | None = None):
-    """Validate one transaction and return (Txn, [Credit]) without committing."""
+def build_transaction(session: Session, data: TransactionIn, pending: dict | None = None,
+                      pending_credits: dict | None = None):
+    """Validate one transaction and return (Txn, [Credit]) without committing.
+
+    `pending` holds transactions already accepted earlier in the same import
+    (id -> Txn) and `pending_credits` their credit lines (id -> [Credit]).
+    """
     pending = pending if pending is not None else {}
+    pending_credits = pending_credits if pending_credits is not None else {}
 
     if data.transaction_id in pending or session.get(Txn, data.transaction_id) is not None:
         raise ApiError(409, "DUPLICATE_TRANSACTION", f"Transaction {data.transaction_id} already exists")
@@ -163,7 +169,7 @@ def build_transaction(session: Session, data: TransactionIn, pending: dict | Non
 
         days = (data.txn_date - original.txn_date).days
         if days < CLAWBACK_DAYS:
-            orig_credits = pending.get(("credits", original.transaction_id)) or session.exec(
+            orig_credits = pending_credits.get(original.transaction_id) or session.exec(
                 select(Credit).where(Credit.transaction_id == original.transaction_id).order_by(Credit.line_no)
             ).all()
             splits = [c.split_pct for c in orig_credits]
@@ -192,16 +198,17 @@ def create_transaction(session: Session, data: TransactionIn):
 
 def import_transactions(session: Session, rows: list[TransactionIn]) -> dict:
     pending: dict = {}
+    pending_credits: dict = {}
     built = []
     errors = []
     for i, row in enumerate(rows):
         try:
-            txn, credits = build_transaction(session, row, pending)
+            txn, credits = build_transaction(session, row, pending, pending_credits)
         except ApiError as e:
             errors.append({"row": i, "transaction_id": row.transaction_id, "code": e.code, "message": e.message})
             continue
         pending[txn.transaction_id] = txn
-        pending[("credits", txn.transaction_id)] = credits
+        pending_credits[txn.transaction_id] = credits
         built.append((txn, credits))
     if errors:
         raise ApiError(422, "IMPORT_REJECTED", f"{len(errors)} row(s) failed; nothing was imported", errors)
