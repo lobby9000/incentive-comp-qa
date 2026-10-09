@@ -182,6 +182,7 @@ def build_transaction(session: Session, data: TransactionIn, pending: dict | Non
 def create_transaction(session: Session, data: TransactionIn):
     txn, credits = build_transaction(session, data)
     session.add(txn)
+    session.flush()  # BUG-008: the transaction row must exist before its credit lines (FK)
     for c in credits:
         session.add(c)
     session.commit()
@@ -205,9 +206,11 @@ def import_transactions(session: Session, rows: list[TransactionIn]) -> dict:
     if errors:
         raise ApiError(422, "IMPORT_REJECTED", f"{len(errors)} row(s) failed; nothing was imported", errors)
 
-    n_credits = 0
-    for txn, credits in built:
+    for txn, _ in built:
         session.add(txn)
+    session.flush()  # BUG-008: insert every transaction before any credit line (FK)
+    n_credits = 0
+    for _, credits in built:
         for c in credits:
             session.add(c)
             n_credits += 1

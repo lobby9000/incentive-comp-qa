@@ -3,6 +3,7 @@ import os
 from datetime import date
 from pathlib import Path
 
+from sqlalchemy import event
 from sqlmodel import Session, SQLModel, create_engine, select
 
 from .models import Period, Store
@@ -21,7 +22,14 @@ def make_engine(url: str | None = None):
     kwargs = {}
     if url.startswith("sqlite"):
         kwargs["connect_args"] = {"check_same_thread": False}
-    return create_engine(url, **kwargs)
+    engine = create_engine(url, **kwargs)
+    if url.startswith("sqlite"):
+        # BUG-008 follow-up: enforce foreign keys on SQLite too, so local runs
+        # fail the same way PostgreSQL does instead of hiding ordering bugs.
+        @event.listens_for(engine, "connect")
+        def _fk_on(dbapi_conn, _record):
+            dbapi_conn.execute("PRAGMA foreign_keys=ON")
+    return engine
 
 
 def init_db(engine) -> None:
