@@ -6,7 +6,10 @@ from sqlmodel import Session, select
 
 from . import VERSION, service
 from .db import init_db, make_engine
-from .errors import ApiError, api_error_handler, validation_error_handler
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
+from .errors import (ApiError, api_error_handler, http_error_handler, unhandled_error_handler,
+                     validation_error_handler)
 from .models import Credit, Period, Txn
 from .schemas import ImportIn, QuotaIn, SellerIn, SellerOut, SellerPatch, TransactionIn, money_str
 
@@ -23,6 +26,8 @@ def create_app(database_url: str | None = None) -> FastAPI:
     app.state.engine = engine
     app.add_exception_handler(ApiError, api_error_handler)
     app.add_exception_handler(RequestValidationError, validation_error_handler)
+    app.add_exception_handler(StarletteHTTPException, http_error_handler)
+    app.add_exception_handler(Exception, unhandled_error_handler)
 
     def get_session():
         with Session(engine) as session:
