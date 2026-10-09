@@ -1,0 +1,27 @@
+{
+  "dataset_sha256": "d236d71fe15efbede56d5cd35f1616d9defce2893a37c0fdfa91967cf00d70a0",
+  "control_checks_all_zero": true,
+  "periods": {
+    "2026-10": {
+      "payout_rows": 251,
+      "qualified": 232,
+      "total_quota": "56243643.33",
+      "net_credited": "61300664.41",
+      "total_payout": "1084829.53"
+    },
+    "2026-11": {
+      "payout_rows": 251,
+      "qualified": 222,
+      "total_quota": "69852673.33",
+      "net_credited": "75119097.13",
+      "total_payout": "1304541.23"
+    },
+    "2026-12": {
+      "payout_rows": 248,
+      "qualified": 218,
+      "total_quota": "82484253.33",
+      "net_credited": "88902139.06",
+      "total_payout": "1569694.50"
+    }
+  }
+}

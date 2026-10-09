@@ -1,0 +1,14 @@
+{
+  "seed": 20261008,
+  "sellers": 251,
+  "quotas": 750,
+  "sales": 23861,
+  "returns": 1398,
+  "split_sales": 3644,
+  "leave_date": "2026-11-15",
+  "sha256": {
+    "sellers.csv": "8c8b94dc8f1501ede3094a0ec25dd48f5b30cdaa834f192cec00376bc6ebe8d5",
+    "quotas.csv": "963129274c30fbf7516cbd324ffd1a852d924dbbe90ac1b7576e494885b6bfc2",
+    "transactions.csv": "d236d71fe15efbede56d5cd35f1616d9defce2893a37c0fdfa91967cf00d70a0"
+  }
+}
