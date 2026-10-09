@@ -173,7 +173,8 @@ def build_transaction(session: Session, data: TransactionIn, pending: dict | Non
                 select(Credit).where(Credit.transaction_id == original.transaction_id).order_by(Credit.line_no)
             ).all()
             splits = [c.split_pct for c in orig_credits]
-            values = split_cents(-amount_cents, splits)
+            # BUG-005: split the positive amount with the sale rule, then negate
+            values = [-v for v in split_cents(amount_cents, splits)]
             for c, v in zip(orig_credits, values):
                 credits.append(Credit(transaction_id=data.transaction_id, seller_id=c.seller_id,
                                       line_no=c.line_no, split_pct=c.split_pct, credit_cents=v,
