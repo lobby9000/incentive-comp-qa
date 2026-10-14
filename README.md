@@ -123,3 +123,9 @@ Sellers, quotas, 23,861 sales and 1,398 returns are generated with a fixed seed
 (`data/generate.py`).
 
 Luis A. Quiroz
+
+Case study page: [lobby9000.github.io/qa-case-study.html](https://lobby9000.github.io/qa-case-study.html) · Licence: [MIT](LICENSE)
+
+---
+
+Part of the portfolio of Luis Ángel Quiroz López · [lobby9000.github.io](https://lobby9000.github.io) · [LinkedIn](https://www.linkedin.com/in/llqq) · [GitHub](https://github.com/lobby9000)
