@@ -10,6 +10,8 @@ the testing around it: requirements review, test design, API and database
 testing, defect tracking, regression in CI and a parallel run against an
 independent Excel model.
 
+**Try it in your browser:** the [`qa rc1` demo](https://lobby9000.github.io/professional.html?app=terminal&run=qa%20rc1) on my site runs the calculation test cases against build rc1, with `app/calc.py` ported to JavaScript, and shows where its three calculation defects fail. `qa` runs the same cases on rc2.
+
 ## Results
 
 | | Build rc1 | Build rc2 |
